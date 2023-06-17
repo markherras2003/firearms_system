@@ -1,0 +1,148 @@
+[{
+  "_id": {
+    "$oid": "609307574dbbfb8ec27e52c4"
+  },
+  "name": "users:read",
+  "description": "Read users",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "609307714dbbfb8ec27e52c5"
+  },
+  "name": "users:write",
+  "description": "Create Users",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "609307834dbbfb8ec27e52c6"
+  },
+  "name": "joborders:read",
+  "description": "Read Job Orders",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6093078e4dbbfb8ec27e52c7"
+  },
+  "name": "joborders:write",
+  "description": "Create Job Orders",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e67a8e4d1add857a1d994"
+  },
+  "name": "users:delete",
+  "description": "Delete Users",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e67c9e4d1add857a1d998"
+  },
+  "name": "users:edit",
+  "description": "Edit Users",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e68220dfae1d0ecccece2"
+  },
+  "name": "joborders:delete",
+  "description": "Delete Job Orders",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e68430dfae1d0ecccece4"
+  },
+  "name": "joborders:edit",
+  "description": "Edit Job Orders",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6b940550bc3f6cf7c8dd"
+  },
+  "name": "roles:read",
+  "description": "Read Roles",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6bb00550bc3f6cf7c8df"
+  },
+  "name": "roles:edit",
+  "description": "Edit Roles",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6bbb0550bc3f6cf7c8e1"
+  },
+  "name": "roles:delete",
+  "description": "Delete Roles",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6bd80550bc3f6cf7c8e3"
+  },
+  "name": "roles:write",
+  "description": "Create Roles",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6be70550bc3f6cf7c8e5"
+  },
+  "name": "permissions:read",
+  "description": "Read Permissions",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6d6017a69c36c8603511"
+  },
+  "name": "permissions:edit",
+  "description": "Edit Permissions",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6d6f17a69c36c8603513"
+  },
+  "name": "permissions:delete",
+  "description": "Delete Permissions",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644e6d9317a69c36c8603515"
+  },
+  "name": "permissions:write",
+  "description": "Create Permissions",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644f8a5504420a2c65afa56e"
+  },
+  "name": "dashboard:read",
+  "description": "View Data and Read Dashboard",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "648817711c1cf6b0e9b96cd8"
+  },
+  "name": "personnels:read",
+  "description": "Access Read Personnel",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6488177f1c1cf6b0e9b96cda"
+  },
+  "name": "personnels:write",
+  "description": "Write Personnels",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "648817911c1cf6b0e9b96cdc"
+  },
+  "name": "personnels:delete",
+  "description": "Delete Personnels",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "648817ad1c1cf6b0e9b96ce6"
+  },
+  "name": "personnels:edit",
+  "description": "Edit Personnels",
+  "__v": 0
+}]

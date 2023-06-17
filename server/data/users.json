@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "644cfb8eeaf2c9da183b8372"
+  },
+  "firstName": "Larry Mark",
+  "lastName": "Somocor",
+  "email": "larrymark@gmail.com",
+  "password": "$2b$10$R9NWBk72Mo8A1kK4n4WgHO.juBnintJy9s0guikBX1.ZAQWMGBe22",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2023-04-29T11:12:14.042Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-29T11:12:14.042Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644d0670c27e30394a0da60c"
+  },
+  "firstName": "Larry Mark",
+  "lastName": "Somocor",
+  "email": "larrymark2003@gmail.com",
+  "password": "$2b$10$JmWbWZ4ugK6VtSGle6wyQ.WpxstCWnGOxKUr9zMenVPXbAR7dw5mG",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2023-04-29T11:58:40.261Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-29T11:58:40.261Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "644f8f2704420a2c65afa5cd"
+  },
+  "firstName": "Larry Mark",
+  "lastName": "Somocor",
+  "email": "larrymark2004@gmail.com",
+  "password": "$2b$10$hnbcFTvMlmeQlOjgOvLfe.tlfJ0s3/BlsSpdojMQ3v.o75i4Z4P56",
+  "role": "viewer",
+  "createdAt": {
+    "$date": "2023-05-01T10:06:31.003Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-13T07:19:34.235Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,35 @@
+[{
+  "_id": {
+    "$oid": "64854f4262a124d1f6dab9c9"
+  },
+  "personnel_id": 1001,
+  "fullname": "Larry Mark Somocor",
+  "personnel_rank": "AW",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "larrymark2003@gmail.com",
+  "createdAt": {
+    "$date": "2023-06-11T04:36:18.446Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-17T04:50:50.088Z"
+  },
+  "__v": 0,
+  "serial_no": "123-5"
+},{
+  "_id": {
+    "$oid": "6488172c1c1cf6b0e9b96cc4"
+  },
+  "personnel_id": 1002,
+  "fullname": "Don Micael Moleno",
+  "personnel_rank": "AM",
+  "personnel_brsvc": "PN",
+  "personnel_email": "don.micael@gmail.com",
+  "createdAt": {
+    "$date": "2023-06-13T07:13:48.020Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-17T05:00:39.486Z"
+  },
+  "__v": 0,
+  "serial_no": "554-33"
+}]

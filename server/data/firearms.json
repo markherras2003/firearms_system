@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "648d622000b3ec939416f86a"
+  },
+  "firearms": "mark1234",
+  "personel_id": 1001,
+  "firearms_serialno": "1001",
+  "firearms_qrcode": "mark1234",
+  "firearms_isperson": false,
+  "firearms_id": 1001,
+  "createdAt": {
+    "$date": "2023-06-17T07:34:56.961Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-17T07:34:56.961Z"
+  },
+  "__v": 0
+}]
