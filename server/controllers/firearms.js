@@ -18,7 +18,7 @@ export const getFireArms = async (req, res) => {
     const data = firearms.map(({
       _id,
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -27,7 +27,7 @@ export const getFireArms = async (req, res) => {
     }) => ({
       _id,
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -49,7 +49,7 @@ export const saveFireArm = async (req, res) => {
 
     const {
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -58,7 +58,7 @@ export const saveFireArm = async (req, res) => {
 
     const newFireArm = new FireArms({
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno :nextNumberID,
       firearms_qrcode,
       firearms_status,
@@ -78,7 +78,7 @@ export const updateFireArm = async (req, res) => {
   try {
     const {
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -87,7 +87,7 @@ export const updateFireArm = async (req, res) => {
 
     const updateFireArms = {
       firearms,
-      serial_no,
+      personel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,

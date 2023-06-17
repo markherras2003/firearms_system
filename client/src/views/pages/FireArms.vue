@@ -154,7 +154,7 @@ const editFireArms = (editFireArms) => {
 };
 
 const confirmDelete = (editFireArms) => {
-    firearm.value = editPersonnel;
+    firearm.value = editFireArms;
     deletefirearmDialog.value = true;
 };
 
@@ -231,7 +231,7 @@ const initFilters = () => {
                         <template v-slot:start>
                             <div class="my-2">
                                 <Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedPersonnels || !selectedPersonnels.length" />
+                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedFireArms || !selectedFireArms.length" />
                             </div>
                         </template>
 
@@ -252,7 +252,7 @@ const initFilters = () => {
                         filterDisplay="menu"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         :rowsPerPageOptions="[5, 10, 25]"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Personnels"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms"
                         responsiveLayout="scroll"
                         :globalFilterFields="['firearms']"
                     >
@@ -288,13 +288,13 @@ const initFilters = () => {
                     <Dialog v-model:visible="firearmDialog" :style="{ width: '600px' }" header="Personnel Details" :modal="true" class="p-fluid">
                         <div class="field">
                             <label for="name">Firearms Serial No.</label>
-                            <InputText id="firearms_serialno" v-model.trim="personnel.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !personnel.firearms_serialno }" />
-                            <small class="p-invalid" v-if="submitted && !personnel.firearms_serialno">Full Name is required.</small>
+                            <InputText id="firearms_serialno" v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
                         </div>
                         <div class="field">
                             <label for="firearms">FireArms</label>
-                            <InputText id="firearms" v-model.trim="personnel.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.firearms }" />
-                            <small class="p-invalid" v-if="submitted && !personnel.firearms">Email is required.</small>
+                            <InputText id="firearms" v-model.trim="firearm.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms }" />
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms">Email is required.</small>
                         </div>
                         
                         <template #footer>
@@ -303,7 +303,7 @@ const initFilters = () => {
                         </template>
                     </Dialog>
 
-                    <Dialog v-model:visible="deleteFireArms" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                    <Dialog v-model:visible="deletefirearmDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
                             <span v-if="personnel"
