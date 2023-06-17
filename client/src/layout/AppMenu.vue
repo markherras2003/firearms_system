@@ -10,13 +10,14 @@ const model = ref([
     {
         label: 'Administrator Panel',
         items: [
-            { label: 'Users Account', icon: 'pi pi-fw pi-users', to: '/pages/users' },
-            { label: 'Job Orders', icon: 'pi pi-fw pi-id-card', to: '/pages/joborders' },
+            { label: 'Personnels', icon: 'pi pi-fw pi-id-card', to: '/pages/personnels' },
+            { label: 'Firearms', icon: 'pi pi-fw pi-id-card', to: '/pages/firearms' },
         ]
     },
     {
         label: 'Access Control',
         items: [
+            { label: 'Users Account', icon: 'pi pi-fw pi-users', to: '/pages/users' },
             { label: 'Roles', icon: 'pi pi-fw pi-users', to: '/pages/roles' },
             { label: 'Permissions', icon: 'pi pi-fw pi-id-card', to: '/pages/permissions' },
         ]

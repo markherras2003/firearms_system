@@ -8,6 +8,10 @@ import userRoutes from "./routes/users.js";
 import joborderRoutes from "./routes/joborder.js";
 import roleRoutes from "./routes/role.js";
 import permissionRoutes from "./routes/permission.js";
+import personnelRoutes from "./routes/personnel.js";
+import firearmsRoutes from "./routes/firearms.js";
+import personnelRankRoutes from "./routes/personnel_rank.js";
+import personnelSVCRoutes from "./routes/personnel_svc.js"
 import { roles, permissions } from "./data/index.js";
 
 dotenv.config();
@@ -29,6 +33,18 @@ app.use("/users", userRoutes);
 
 // Routers for Job Order
 app.use("/joborder", joborderRoutes);
+
+// Routers for Job Order
+app.use("/personnel", personnelRoutes);
+
+// Routers for Job Order
+app.use("/firearms", firearmsRoutes);
+
+// Routers for Job Order
+app.use("/personnel_rank", personnelRankRoutes);
+
+// Routers for Job Order
+app.use("/personnel_svc", personnelSVCRoutes);
 
 //
 app.use("/roles", roleRoutes);

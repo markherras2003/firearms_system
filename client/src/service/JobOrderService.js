@@ -43,7 +43,7 @@ export default class JobOrderService {
                     <div class="row">
                 <h1 class="mb-3 pb-3 border-bottom"></h1>
                 <div class="col-sm-6">
-                    <h5>MBH Computech</h5>
+                    <h5>Armory Monitoring System</h5>
                     <h6>Door A17 & A18 Yoho Center</h6>
                     <h6>Sanito, Ipil, Zamboanga Sibugay 7001</h6>
                     <h6>(062) 957-5132 / 09176252540</h6>

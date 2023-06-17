@@ -52,6 +52,8 @@ onMounted(async () => {
         const role = await roleService.getRolename();
         cruddatas.value = data;
         roledatas.value = role;
+        console.log(cruddatas.value);
+        console.log(roledatas.value);
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -116,6 +118,7 @@ const saveData = async () => {
                 cruddatas.value[index] = cruddata.value;
             }
             //Store response value to cruddata
+            cruddata.value.role = roleName
             cruddata.value = response.data;
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Users Updated', life: 3000 });
         } else {
@@ -164,6 +167,7 @@ const editData = (editData) => {
         password,
         role: { name: role }
     };
+    console.log(role);
     crudDialog.value = true;
 };
 
