@@ -41,6 +41,22 @@ export const getPersonnels = async (req, res) => {
 };
 
 
+export const getPersonnelsDropdown = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const personnels = await Personnel.find();
+    const data = personnels.map(({
+      personnel_id,
+    }) => ({
+      personnel_id,
+    }));
+    res.status(200).json({ data });
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+
 /* Job Order Save Executions */
 export const savePersonnel = async (req, res) => {
   try {

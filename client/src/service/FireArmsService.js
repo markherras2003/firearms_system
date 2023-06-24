@@ -21,7 +21,7 @@ export default class FireArmsService {
         if (!token) {
             return;
         }
-        const response = await axios.get(`/personnel`, {
+        const response = await axios.get(`/personnel/mydata/123`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }

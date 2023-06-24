@@ -10,7 +10,7 @@ import AccessDenied from '@/components/AccessDenied.vue';
 
 const toast = useToast();
 
-const firearms = ref(null);
+const firearms_data = ref(null);
 const firearmDialog = ref(false);
 const deletefirearmDialog = ref(false);
 const deletefirearmsDialog = ref(false);
@@ -22,6 +22,7 @@ const submitted = ref(false);
 const firearmService = new FireArmsService();
 const user = ref(null);
 const store = useStore();
+const personneldata = ref([null]);
 
 onBeforeMount(() => {
     initFilters();
@@ -44,9 +45,10 @@ const canEdit = computed(() => hasPermission('personnels:edit', store.state.curr
 onMounted(async () => {
     try {
         const data = await firearmService.getFireArms();
-  
-        firearms.value = data;
-
+        const personnels = await firearmService.getPersonnels();
+        firearms_data.value = data;
+        personneldata.value = personnels;
+        console.log(personneldata.value);
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -75,26 +77,23 @@ const print = (printData) => {
 
 const saveFireArm = async () => {
     submitted.value = true;
-    let {   
-      _id,
-      firearms_serialno,
-      firearms_qrcode,
-      firearms_status,
-      firearms_isperson } = firearm.value || {};
+    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id } = firearm.value || {};
 
-    if (!firearms_serialno || !firearms_qrcode || !firearms_status || !firearms_isperson) {
+    if (!firearms_serialno || !firearms_qrcode || !firearms) {
         return null;
     }
 
+
     if (_id) {
+        console.log(_id);
         const response = await axios.put(
             `/firearms/${_id}`,
             {
                 _id,
                 firearms_serialno,
                 firearms_qrcode,
-                firearms_status,
-                firearms_isperson
+                firearms,
+                personnel_id: personnel_id.personnel_id
             },
             {
                 headers: {
@@ -102,12 +101,19 @@ const saveFireArm = async () => {
                 }
             }
         );
-        let index = firearms.value.findIndex((firearm) => firearm._id === _id);
+        let index = firearms_data.value.findIndex((firearm) => firearm._id === _id);
         if (index > -1) {
-            firearms.value[index] = firearm.value;
+            firearms_data.value[index] = firearm.value;
         }
+
+        firearm.value.personnel_id = personnel_id.personnel_id;
         firearm.value = response.data;
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Personnel Updated', life: 3000 });
+        toast.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Personnel Updated',
+            life: 3000
+        });
     } else {
         firearms_serialno = generateID();
         const response = await axios.post(
@@ -115,8 +121,8 @@ const saveFireArm = async () => {
             {
                 firearms_serialno,
                 firearms_qrcode,
-                firearms_status,
-                firearms_isperson
+                firearms,
+                personnel_id: personnel_id.personnel_id
             },
             {
                 headers: {
@@ -124,32 +130,38 @@ const saveFireArm = async () => {
                 }
             }
         );
-        // Set joborder.value to response data
-        firearm.value = response.data;
-        firearms.value.push(firearm.value);
 
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Fire Arms Created', life: 3000 });
+        firearm.value.personnel_id = personnel_id;
+        firearm.value = response.data;
+        firearms_data.value.push(firearm.value);
+
+        toast.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Fire Arms Created',
+            life: 3000
+        });
     }
+
     firearmDialog.value = false;
-    // Clear joborder.value
+    // Clear firearm.value
     firearm.value = {};
 };
 
 const editFireArms = (editFireArms) => {
     firearm.value = { ...editFireArms };
-    const {     
+    console.log(firearm.value);
+    const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms } = editFireArms;
+
+    firearm.value = {
         _id,
         firearms_serialno,
         firearms_qrcode,
-        firearms_status,
-        firearms_isperson } = editFireArms;
-      firearm.value = {
-        _id,
-        firearms_serialno,
-        firearms_qrcode,
-        firearms_status,
+        firearms,
+        personnel_id: { personnel_id : personnel_id},
         firearms_isperson
     };
+    console.log(personnel_id)
     firearmDialog.value = true;
 };
 
@@ -166,7 +178,7 @@ const deleteFireArms = async () => {
         }
     });
     if (response.status === 200) {
-        firearms.value = firearms.value.filter((val) => val.firearms_serialno !== firearms_serialno);
+        firearms_data.value = firearms_data.value.filter((val) => val.firearms_serialno !== firearms_serialno);
         deletefirearmDialog.value = false;
         firearm.value = {};
         toast.add({ severity: 'success', summary: 'Successful', detail: 'Fire Arms Deleted', life: 3000 });
@@ -174,7 +186,7 @@ const deleteFireArms = async () => {
 };
 
 function generateID() {
-    const lastID = firearms.value.length ? firearms.value[firearms.value.length - 1].firearms_serialno : 0;
+    const lastID = firearms_data.value.length ? firearms_data.value[firearms_data.value.length - 1].firearms_serialno : 0;
     return lastID + 1;
 }
 
@@ -197,7 +209,7 @@ const deleteSelectedFireArms = async () => {
             });
             if (response.status === 200) {
                 // Remove the deleted job order from the joborders array
-                firearms.value = firearms.value.filter((val) => val.firearms_serialno !== firearm.firearms_serialno);
+                firearms_data.value = firearms_data.value.filter((val) => val.firearms_serialno !== firearm.firearms_serialno);
             }
         }
         // Clear the selected job orders and display a success toast notification
@@ -242,7 +254,7 @@ const initFilters = () => {
 
                     <DataTable
                         ref="dt"
-                        :value="firearms"
+                        :value="firearms_data"
                         v-model:selection="selectedFireArms"
                         dataKey="_id"
                         :paginator="true"
@@ -267,36 +279,67 @@ const initFilters = () => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="firearms_serialno" header="Personnel ID #" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:25%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms Serial No.</span>
+                                <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.firearms_serialno }}
                             </template>
                         </Column>
-                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:25%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms</span>
+                                <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.firearms }}
+                            </template>
+                        </Column>
+                        <Column field="personnel_id" header="Personnel ID #" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Fire Arms Serial No.</span>
+                                {{ slotProps.data.personnel_id }}
+                            </template>
+                        </Column>
+                        <Column field="firearms_qrcode" header="Fire Arms QR Code" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Fire Arms QR Code</span>
+                                {{ slotProps.data.firearms_qrcode }}
                             </template>
                             <template #filter="{ filterModel }">
                                 <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by Fire Arms" />
                             </template>
                         </Column>
-                     
+
+                        <Column headerStyle="min-width:10rem;">
+                            <template #body="slotProps">
+                                <Button icon="pi pi-pencil" v-if="canEdit" class="p-button-rounded p-button-success mr-2" @click="editFireArms(slotProps.data)" />
+                                <!--<Button icon="pi pi-print" v-if="canRead" class="p-button-rounded p-button-primary mt-2" @click="print(slotProps.data)" />-->
+                                <Button icon="pi pi-trash" v-if="canDelete" class="p-button-rounded p-button-warning ml-2" @click="confirmDelete(slotProps.data)" />
+                            </template>
+                        </Column>
                     </DataTable>
 
-                    <Dialog v-model:visible="firearmDialog" :style="{ width: '600px' }" header="Personnel Details" :modal="true" class="p-fluid">
+                    <Dialog v-model:visible="firearmDialog" :style="{ width: '600px' }" header="Firearms Details" :modal="true" class="p-fluid">
                         <div class="field">
                             <label for="name">Firearms Serial No.</label>
                             <InputText id="firearms_serialno" v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
                             <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
                         </div>
+
                         <div class="field">
                             <label for="firearms">FireArms</label>
                             <InputText id="firearms" v-model.trim="firearm.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms }" />
                             <small class="p-invalid" v-if="submitted && !firearm.firearms">Email is required.</small>
                         </div>
-                        
+
+                        <div class="field">
+                            <label for="firearms_qrcode">FireArms QR Code</label>
+                            <InputText id="firearms_qrcode" v-model.trim="firearm.firearms_qrcode" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms_qrcode }" />
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms_qrcode">Fire Arms QR Code is Required.</small>
+                        </div>
+
+                        <div class="field">
+                            <label for="personnel_id">Personnel</label>
+                            <Dropdown v-model.trim="firearm.personnel_id" :options="personneldata" optionLabel="personnel_id" placeholder="Select Personnel" />
+                        </div>
+
                         <template #footer>
                             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
                             <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveFireArm" />
@@ -306,8 +349,8 @@ const initFilters = () => {
                     <Dialog v-model:visible="deletefirearmDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                            <span v-if="personnel"
-                                >Are you sure you want to delete <b>{{ firearm.firearms }}</b
+                            <span v-if="firearm"
+                                >Are you sure you want to deletes <b>{{ firearm.firearms }}</b
                                 >?</span
                             >
                         </div>
@@ -320,7 +363,7 @@ const initFilters = () => {
                     <Dialog v-model:visible="deletefirearmsDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                            <span v-if="personnel">Are you sure you want to delete the selected firearms?</span>
+                            <span v-if="firearm">Are you sure you want to delete the selected firearms?</span>
                         </div>
                         <template #footer>
                             <Button label="No" icon="pi pi-times" class="p-button-text" @click="deletefirearmsDialog = false" />

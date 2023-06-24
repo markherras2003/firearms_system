@@ -18,7 +18,7 @@ export const getFireArms = async (req, res) => {
     const data = firearms.map(({
       _id,
       firearms,
-      personel_id,
+      personnel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -27,7 +27,7 @@ export const getFireArms = async (req, res) => {
     }) => ({
       _id,
       firearms,
-      personel_id,
+      personnel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_status,
@@ -44,24 +44,24 @@ export const getFireArms = async (req, res) => {
 /* Job Order Save Executions */
 export const saveFireArm = async (req, res) => {
   try {
-    const lastNumber = await FireArms.findOne().sort({ firearms_serialno: -1 });
-    const nextNumberID = lastNumber ? lastNumber.firearms_serialno + 1 : 1001;
+    const lastNumber = await FireArms.findOne().sort({ firearms_id: -1 });
+    const nextNumberID = lastNumber ? lastNumber.firearms_id + 1 : 1001;
 
     const {
       firearms,
-      personel_id,
+      personnel_id,
       firearms_serialno,
       firearms_qrcode,
-      firearms_status,
+      firearms_id,
       firearms_isperson,
     } = req.body;
 
     const newFireArm = new FireArms({
       firearms,
-      personel_id,
-      firearms_serialno :nextNumberID,
+      personnel_id,
+      firearms_serialno,
       firearms_qrcode,
-      firearms_status,
+      firearms_id :nextNumberID,
       firearms_isperson,
     });
 
@@ -81,7 +81,6 @@ export const updateFireArm = async (req, res) => {
       personel_id,
       firearms_serialno,
       firearms_qrcode,
-      firearms_status,
       firearms_isperson,
     } = req.body;
 
@@ -90,7 +89,6 @@ export const updateFireArm = async (req, res) => {
       personel_id,
       firearms_serialno,
       firearms_qrcode,
-      firearms_status,
       firearms_isperson,
     };
 
@@ -98,7 +96,7 @@ export const updateFireArm = async (req, res) => {
     if (!saveFireArm) {
       return res.status(404).json({ message: 'Fire Arms not found' });
     }
-    res.status(200).json(savePersonnel);
+    res.status(200).json(saveFireArm);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

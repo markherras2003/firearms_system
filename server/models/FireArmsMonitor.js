@@ -12,7 +12,7 @@ const FireArmsMonitorSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        personel_id: {
+        firearms_id: {
             type: Number,
             required: true,
         },

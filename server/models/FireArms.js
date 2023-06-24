@@ -8,9 +8,9 @@ const FireArmsSchema = new mongoose.Schema(
             min: 2,
             max: 50,
         },
-        personel_id: {
+        personnel_id: {
             type: Number,
-            required: true,
+            required: false,
         },
         firearms_serialno: {
             type: String,

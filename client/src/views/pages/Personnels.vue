@@ -79,6 +79,7 @@ const print = (printData) => {
 };
 
 const savePersonnel = async () => {
+    console.log(personnels.value);
     submitted.value = true;
     let {   
       _id,
@@ -138,6 +139,7 @@ const savePersonnel = async () => {
             }
         );
         // Set joborder.value to response data
+
         personnel.value = response.data;
         personnels.value.push(personnel.value);
 
@@ -167,6 +169,7 @@ const editPersonnel = (editPersonnel) => {
         personnel_brsvc : {personnel_brsvc : personnel_brsvc},
         personnel_email,
     };
+    console.log(personnel.value);
     personnelDialog.value = true;
 };
 
