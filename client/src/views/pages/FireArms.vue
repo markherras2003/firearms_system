@@ -82,10 +82,13 @@ const saveFireArm = async () => {
     if (!firearms_serialno || !firearms_qrcode || !firearms) {
         return null;
     }
-
+    if (personnel_id === undefined) {
+        personnel_id = null;
+    } else {
+        personnel_id = personnel_id.personnel_id;
+    }
 
     if (_id) {
-        console.log(_id);
         const response = await axios.put(
             `/firearms/${_id}`,
             {
@@ -93,7 +96,7 @@ const saveFireArm = async () => {
                 firearms_serialno,
                 firearms_qrcode,
                 firearms,
-                personnel_id: personnel_id.personnel_id
+                personnel_id: personnel_id
             },
             {
                 headers: {
@@ -106,7 +109,7 @@ const saveFireArm = async () => {
             firearms_data.value[index] = firearm.value;
         }
 
-        firearm.value.personnel_id = personnel_id.personnel_id;
+        firearm.value.personnel_id = personnel_id;
         firearm.value = response.data;
         toast.add({
             severity: 'success',
@@ -122,7 +125,7 @@ const saveFireArm = async () => {
                 firearms_serialno,
                 firearms_qrcode,
                 firearms,
-                personnel_id: personnel_id.personnel_id
+                personnel_id: personnel_id
             },
             {
                 headers: {
@@ -158,10 +161,10 @@ const editFireArms = (editFireArms) => {
         firearms_serialno,
         firearms_qrcode,
         firearms,
-        personnel_id: { personnel_id : personnel_id},
+        personnel_id: { personnel_id: personnel_id },
         firearms_isperson
     };
-    console.log(personnel_id)
+    console.log(personnel_id);
     firearmDialog.value = true;
 };
 

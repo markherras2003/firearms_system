@@ -78,7 +78,7 @@ export const updateFireArm = async (req, res) => {
   try {
     const {
       firearms,
-      personel_id,
+      personnel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_isperson,
@@ -86,7 +86,7 @@ export const updateFireArm = async (req, res) => {
 
     const updateFireArms = {
       firearms,
-      personel_id,
+      personnel_id,
       firearms_serialno,
       firearms_qrcode,
       firearms_isperson,
