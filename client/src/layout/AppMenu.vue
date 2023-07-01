@@ -12,6 +12,7 @@ const model = ref([
         items: [
             { label: 'Personnels', icon: 'pi pi-fw pi-id-card', to: '/pages/personnels' },
             { label: 'Firearms', icon: 'pi pi-fw pi-id-card', to: '/pages/firearms' },
+            { label: 'Firearms Monitoring', icon: 'pi pi-fw pi-id-card', to: '/pages/firearmsmonitoring' },
         ]
     },
     {

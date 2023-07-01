@@ -16,17 +16,26 @@ const FireArmsMonitorSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        check_in: {
+        firearms_serialno: {
+            type: String,
+            required: true,
+            unique: true,
+            min: 2,
+            max: 50,
+        },
+        firearms_qrcode: {
             type: String,
             required: true,
             min: 2,
             max: 50,
         },
-        check_out: {
-            type: String,
+        check_in: {
+            type: Date,
             required: true,
-            min: 2,
-            max: 50,
+        },
+        check_out: {
+            type: Date,
+            required: true,
         },
     },
     { timestamps: true }

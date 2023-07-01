@@ -12,6 +12,8 @@ import personnelRoutes from "./routes/personnel.js";
 import firearmsRoutes from "./routes/firearms.js";
 import personnelRankRoutes from "./routes/personnel_rank.js";
 import personnelSVCRoutes from "./routes/personnel_svc.js"
+import firearmsMonitorRoutes from "./routes/firearmsmonitoring.js"
+
 import { roles, permissions } from "./data/index.js";
 
 dotenv.config();
@@ -39,6 +41,9 @@ app.use("/personnel", personnelRoutes);
 
 // Routers for Job Order
 app.use("/firearms", firearmsRoutes);
+
+// Routers for Job Order
+app.use("/firearmsmonitoring", firearmsMonitorRoutes);
 
 // Routers for Job Order
 app.use("/personnel_rank", personnelRankRoutes);

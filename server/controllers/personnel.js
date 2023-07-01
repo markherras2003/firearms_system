@@ -47,8 +47,10 @@ export const getPersonnelsDropdown = async (req, res) => {
     const personnels = await Personnel.find();
     const data = personnels.map(({
       personnel_id,
+      fullname
     }) => ({
       personnel_id,
+      fullname
     }));
     res.status(200).json({ data });
   } catch (err) {

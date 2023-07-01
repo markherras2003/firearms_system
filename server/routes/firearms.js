@@ -2,6 +2,7 @@ import express from "express";
 import {
   getFireArm,
   getFireArms,
+  getFireArmID,
   saveFireArm,
   updateFireArm,
   deleteFireArms
@@ -10,6 +11,7 @@ import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
+router.get("/selected/:firearms_serialno", verifyToken, getFireArmID);
 router.get("/:_id", verifyToken, getFireArm);
 router.get("/", verifyToken, getFireArms)
 router.post("/", verifyToken, saveFireArm);

@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "649fcd876da3dc1bfc32c285"
+  },
+  "firearms_monitor_id": "1003",
+  "personnel_id": "1001",
+  "firearms_id": "1004",
+  "firearms_serialno": "SERIAL-1234XYZ2",
+  "check_in": "",
+  "check_out": "2023-07-03 14:30:00"
+}]

@@ -1,7 +1,7 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { ref, onMounted, onBeforeMount, computed } from 'vue';
-import FireArmsService from '@/service/FireArmsService';
+import FireArmsMonitoring from '@/service/FireArmsMonitoring';
 import { useToast } from 'primevue/usetoast';
 import axios from 'axios';
 import InputText from 'primevue/inputtext';
@@ -11,6 +11,7 @@ import AccessDenied from '@/components/AccessDenied.vue';
 const toast = useToast();
 
 const firearms_data = ref(null);
+//const firearms_monitoringdata = ref(null);
 const firearmDialog = ref(false);
 const deletefirearmDialog = ref(false);
 const deletefirearmsDialog = ref(false);
@@ -19,11 +20,20 @@ const selectedFireArms = ref(null);
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
-const firearmService = new FireArmsService();
+const firearmService = new FireArmsMonitoring();
 const user = ref(null);
 const store = useStore();
 const personneldata = ref([null]);
 const autoFilteredValue = ref([]);
+
+
+//Generate Temporary Records 
+
+const check_firearm_data = ref([null]);
+const my_firearm = ref('');
+const personnel_fullname = ref('');
+const personnel_serial_no = ref('');
+const my_firearm_isperson = ref(false);
 
 onBeforeMount(() => {
     initFilters();
@@ -38,10 +48,10 @@ const hasPermission = (permission, currentUserRole, roles) => {
 };
 
 // usage of permissions:
-const canRead = computed(() => hasPermission('firearms:read', store.state.currentUserRole, store.state.roles));
-const canWrite = computed(() => hasPermission('firearms:write', store.state.currentUserRole, store.state.roles));
-const canDelete = computed(() => hasPermission('firearms:delete', store.state.currentUserRole, store.state.roles));
-const canEdit = computed(() => hasPermission('firearms:edit', store.state.currentUserRole, store.state.roles));
+const canRead = computed(() => hasPermission('personnels:read', store.state.currentUserRole, store.state.roles));
+const canWrite = computed(() => hasPermission('personnels:write', store.state.currentUserRole, store.state.roles));
+const canDelete = computed(() => hasPermission('personnels:delete', store.state.currentUserRole, store.state.roles));
+const canEdit = computed(() => hasPermission('personnels:edit', store.state.currentUserRole, store.state.roles));
 
 
 /*const getFieldValue = computed(() => {
@@ -53,11 +63,12 @@ const canEdit = computed(() => hasPermission('firearms:edit', store.state.curren
 
 onMounted(async () => {
     try {
-        const data = await firearmService.getFireArms();
+        const data = await firearmService.getFireArmsMonitoring();
         const personnels = await firearmService.getPersonnels();
+
+        //const firearms_monitoring = await firearmService.getFireArmsMonitoring();
         firearms_data.value = data;
         personneldata.value = personnels;
-        console.log(personneldata.value);
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -84,10 +95,21 @@ const print = (printData) => {
     //joborderService.myPrintData(printData);
 };
 
+const checkFirearms = async (data) => {
+    const firearms_datas = await firearmService.getFireArmsID(data);
+    check_firearm_data.value = firearms_datas;
+    console.log(check_firearm_data.value);
+    let {
+        firearms_serialno,
+    } = check_firearm_data.value
+
+    console.log(firearms_serialno);
+}
+
 const saveFireArm = async () => {
     
     submitted.value = true;
-    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id , firearms_isperson , firearms_availability } = firearm.value || {};
+    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id , firearms_isperson } = firearm.value || {};
 
     if (!firearms_serialno || !firearms_qrcode || !firearms) {
         return null;
@@ -112,7 +134,6 @@ const saveFireArm = async () => {
                 firearms_qrcode,
                 firearms,
                 firearms_isperson,
-                firearms_availability,
                 personnel_id: personnel_id
             },
             {
@@ -143,7 +164,6 @@ const saveFireArm = async () => {
                 firearms_qrcode,
                 firearms,
                 firearms_isperson,
-                firearms_availability,
                 personnel_id: personnel_id
             },
             {
@@ -174,7 +194,7 @@ const editFireArms = (editFireArms) => {
   firearm.value = { ...editFireArms };
   console.log(firearm.value);
 
-  const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms , firearms_availability } = editFireArms;
+  const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms } = editFireArms;
 
   firearm.value = {
     _id,
@@ -183,7 +203,6 @@ const editFireArms = (editFireArms) => {
     firearms,
     personnel_id,
     firearms_isperson,
-    firearms_availability
   };
   console.log(personnel_id);
   firearmDialog.value = true;
@@ -313,13 +332,13 @@ const searchPersonnel = (event) => {
                         filterDisplay="menu"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         :rowsPerPageOptions="[5, 10, 25]"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
                         :globalFilterFields="['firearms']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                                <h5 class="m-0">Manage Fire Arms</h5>
+                                <h5 class="m-0">Manage Fire Arms Monitoring</h5>
                                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                                     <i class="pi pi-search" />
                                     <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -328,32 +347,42 @@ const searchPersonnel = (event) => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                        <Column field="firearms_monitor_id" header="Fire Arms Monitor ID." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Fire Arms Monitor ID.</span>
+                                {{ slotProps.data.firearms_monitor_id }}
+                            </template>
+                        </Column>
+                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.firearms_serialno }}
                             </template>
                         </Column>
-                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
-                                {{ slotProps.data.firearms }}
+                                {{ slotProps.data.fire_arms.firearms }}
                             </template>
                         </Column>
-                        <Column field="personnel_id" header="Personnel ID #" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                        <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms Serial No.</span>
-                                {{ slotProps.data.personnel_id }}
+                                <span class="p-column-title">Personnel</span>
+                                {{ slotProps.data.personnel.fullname }}
                             </template>
                         </Column>
-
-                        <Column field="firearms_availability" header="Firearms Availability" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                        <Column field="check_in" header="Check In" :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Availability.</span>
-                                {{ slotProps.data.firearms_availability }}
+                                <span class="p-column-title">Check In</span>
+                                {{ slotProps.data.check_in }}
                             </template>
                         </Column>
-                 
+                        <Column field="check_out" header="Check Out" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Check Out</span>
+                                {{ slotProps.data.check_out }}
+                            </template>
+                        </Column>
 
                         <Column headerStyle="min-width:10rem;">
                             <template #body="slotProps">
@@ -365,38 +394,20 @@ const searchPersonnel = (event) => {
                     </DataTable>
 
                     <Dialog v-model:visible="firearmDialog" :style="{ width: '600px' }" header="Firearms Details" :modal="true" class="p-fluid">
-                        <div class="field">
-                            <label for="name">Firearms Serial No.</label>
-                            <InputText id="firearms_serialno" v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
-                            <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
-                        </div>
+                       
+                        <div class="formgrid grid">
+                            <div class="field col">
+                                <label for="name"></label>
+                                <InputText id="firearms_serialno" placeholder="Firearms Serial No." v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
+                                <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
+                            </div>
 
-                        <div class="field">
-                            <label for="firearms">FireArms</label>
-                            <InputText id="firearms" v-model.trim="firearm.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms }" />
-                            <small class="p-invalid" v-if="submitted && !firearm.firearms">Email is required.</small>
-                        </div>
-
-                        <div class="field">
-                            <label for="firearms_qrcode">FireArms QR Code</label>
-                            <InputText id="firearms_qrcode" v-model.trim="firearm.firearms_qrcode" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms_qrcode }" />
-                            <small class="p-invalid" v-if="submitted && !firearm.firearms_qrcode">Fire Arms QR Code is Required.</small>
-                        </div>
-
-                        <label for="firearms_availability">Firearms Availability</label>
-                        <div class="field" style="margin-top: 10px;">
-                            <InputSwitch v-model="firearm.firearms_availability" />
-                        </div>
-
-                        <label for="firearms_isperson">Toggle if firearms is under personnel</label>
-                        <div class="field" style="margin-top: 10px;">
-                            <InputSwitch v-model="firearm.firearms_isperson" />
-                        </div>
-
-                        <div class="field" v-if="firearm.firearms_isperson">
-                            <label for="personnel_id">Personnel</label>
-                            <!--<Dropdown v-model.trim="firearm.personnel_id" :options="personneldata" optionLabel="personnel_id" placeholder="Select Personnel" />-->
-                            <AutoComplete placeholder="Search Personnel" id="dd" :dropdown="true" :multiple="false" v-model="firearm.personnel_id" :options="personneldata" :suggestions="autoFilteredValue" @complete="searchPersonnel($event)" field="fullname" />
+                            <div class="field col">
+                                <button @click="checkFirearms(firearm.firearms_serialno)" class="p-button p-component" type="button" aria-label="Submit">
+                                    <span class="p-button-label">Check Firearms</span>
+                                    <span class="p-ink" role="presentation" aria-hidden="true"></span>
+                                </button>
+                            </div>
                         </div>
 
                         <template #footer>
