@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "6496a50392ef42ecd8ec1911"
+  },
+  "firearms": "M14",
+  "personnel_id": 1001,
+  "firearms_serialno": "SERIAL-1234XYZ",
+  "firearms_qrcode": "SERIAL-1234XYZ",
+  "firearms_isperson": true,
+  "firearms_id": 1004,
+  "createdAt": {
+    "$date": "2023-06-24T08:10:43.582Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-01T07:50:50.078Z"
+  },
+  "__v": 0,
+  "firearms_availability": true
+},
+{
+  "_id": {
+    "$oid": "64970dd82109370a92a9440d"
+  },
+  "firearms": "M16",
+  "personnel_id": 1002,
+  "firearms_serialno": "SERIAL-1234XYZ1",
+  "firearms_qrcode": "gafafas",
+  "firearms_isperson": true,
+  "firearms_id": 1005,
+  "createdAt": {
+    "$date": "2023-06-24T15:38:00.433Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-01T07:54:06.917Z"
+  },
+  "__v": 0,
+  "firearms_availability": true
+},
+{
+  "_id": {
+    "$oid": "64970e5b2109370a92a94414"
+  },
+  "firearms": "AK24",
+  "personnel_id": 1004,
+  "firearms_serialno": "SERIAL-1234XYZ11",
+  "firearms_qrcode": "fafgad",
+  "firearms_isperson": true,
+  "firearms_id": 1006,
+  "createdAt": {
+    "$date": "2023-06-24T15:40:11.680Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-01T07:54:47.588Z"
+  },
+  "__v": 0,
+  "firearms_availability": true
+},
+{
+  "_id": {
+    "$oid": "649fb122aa05eafebbdfecd8"
+  },
+  "firearms": "M14",
+  "personnel_id": 1004,
+  "firearms_serialno": "SERIAL-1234XYZ111",
+  "firearms_qrcode": "fsrdslgd46462",
+  "firearms_isperson": true,
+  "firearms_id": 1007,
+  "createdAt": {
+    "$date": "2023-07-01T04:52:50.532Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-01T08:01:21.342Z"
+  },
+  "__v": 0,
+  "firearms_availability": true
+}]
