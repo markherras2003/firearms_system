@@ -1,7 +1,7 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { ref, onMounted, onBeforeMount, computed } from 'vue';
-import FireArmsMonitoring from '@/service/FireArmsMonitoring';
+import FireArmsMonitoringLog from '@/service/FireArmsMonitoringLog';
 import { useToast } from 'primevue/usetoast';
 import axios from 'axios';
 import InputText from 'primevue/inputtext';
@@ -20,7 +20,7 @@ const selectedFireArms = ref(null);
 const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
-const firearmService = new FireArmsMonitoring();
+const firearmService = new FireArmsMonitoringLog();
 const user = ref(null);
 const store = useStore();
 const personneldata = ref([null]);
@@ -29,7 +29,7 @@ const autoFilteredValue = ref([]);
 //Generate Temporary Records
 
 const temp_id = ref('');
-const check_firearm_data_log = ref([null]);
+
 const checkstatus = ref('');
 const isFirearms = ref(false);
 const check_firearm_data = ref([null]);
@@ -217,7 +217,8 @@ const logFirearms = async (data) => {
                 let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
                 console.log(firearms_datas_log);
 
-                if (personnel_id === null) {
+
+                if (personnel_id===null) {
                     personnel_id = firearms_monitor.personnel_id;
                 }
 
@@ -228,8 +229,8 @@ const logFirearms = async (data) => {
                         firearms_qrcode,
                         firearms_id,
                         personnel_id,
-                        check_in: firearms_monitor.check_in,
-                        check_out: firearms_monitor.check_out
+                        check_in:firearms_monitor.check_in,
+                        check_out:firearms_monitor.check_out
                     },
                     {
                         headers: {
@@ -238,16 +239,6 @@ const logFirearms = async (data) => {
                     }
                 );
 
-                console.log(_id);
-
-                setTimeout(() => {
-                    const response_delete = axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
-                        headers: {
-                            Authorization: 'Bearer ' + localStorage.getItem('token')
-                        }
-                    });
-                    window.location.reload('/firearmsmonitoringlog');
-                }, 1000);
             }
             const response = await axios.put(
                 `firearms/setavailability/${_id}`,
@@ -272,7 +263,7 @@ const logFirearms = async (data) => {
         }, 500);
     } else {
         let response;
-        let _id = firearms_monitor._id;
+        const _id = firearms_monitor._id;
         console.log('Update');
         const checkInDate = new Date();
         const checkOutDate = new Date();
@@ -319,43 +310,6 @@ const logFirearms = async (data) => {
             });
 
             console.log('Move to logs');
-
-                const firearms_datas_logs = await firearmService.getFireArmsID(data);
-                check_firearm_data_log.value = firearms_datas_logs;
-                //let {firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
-
-                console.log(firearms_datas_logs);
-            
-
-            if (personnel_id === null) {
-                personnel_id = firearms_monitor.personnel_id;
-            }
-
-            const response2 = await axios.post(
-                `firearmsmonitoringlog`,
-                {
-                    firearms_serialno,
-                    firearms_qrcode,
-                    firearms_id,
-                    personnel_id,
-                    check_in: firearms_monitor.check_in,
-                    check_out: firearms_monitor.check_out
-                },
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token')
-                    }
-                }
-            );
-
-            setTimeout(() => {
-                const response_delete = axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token')
-                    }
-                });
-                window.location.reload('/firearmsmonitoringlog');
-            }, 1000);
         }
 
         let set_val = false;
@@ -389,7 +343,7 @@ const confirmDelete = (editFireArms) => {
 
 const deleteFireArms = async () => {
     let { _id, firearms_serialno } = firearm.value || {};
-    const response = await axios.delete(`/firearmsmonitoring/${_id}`, {
+    const response = await axios.delete(`/firearmsmonitoringlog/${_id}`, {
         headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
         }
@@ -419,7 +373,7 @@ const deleteSelectedFireArms = async () => {
     try {
         // Loop through each selected job order and send a DELETE request
         for (const firearm of selectedFireArms.value) {
-            const response = await axios.delete(`/firearmsmonitoring/${firearm._id}`, {
+            const response = await axios.delete(`/firearmsmonitoringlog/${firearm._id}`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
@@ -469,7 +423,6 @@ const searchPersonnel = (event) => {
                     <Toolbar class="mb-4">
                         <template v-slot:start>
                             <div class="my-2">
-                                <Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
                                 <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedFireArms || !selectedFireArms.length" />
                             </div>
                         </template>
@@ -506,10 +459,10 @@ const searchPersonnel = (event) => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="firearms_monitor_id" header="Fire Arms Monitor ID." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_monitor_log_id" header="Fire Arms Monitor ID." :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms Monitor ID.</span>
-                                {{ slotProps.data.firearms_monitor_id }}
+                                <span class="p-column-title">Fire Arms Monitor Log ID.</span>
+                                {{ slotProps.data.firearms_monitor_log_id }}
                             </template>
                         </Column>
                         <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">

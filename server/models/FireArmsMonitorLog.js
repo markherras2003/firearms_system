@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const FireArmsMonitorSchema = new mongoose.Schema(
+const FireArmsMonitorLogSchema = new mongoose.Schema(
     {
-        firearms_monitor_id: {
+        firearms_monitor_log_id: {
             type: Number,
             required: true,
             default: 1001,
@@ -18,14 +18,11 @@ const FireArmsMonitorSchema = new mongoose.Schema(
         },
         firearms_serialno: {
             type: String,
-            required: true,
-            unique: true,
             min: 2,
             max: 50,
         },
         firearms_qrcode: {
             type: String,
-            required: true,
             min: 2,
             max: 50,
         },
@@ -39,5 +36,5 @@ const FireArmsMonitorSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const FireArmsMonitor = mongoose.model("FireArmsMonitor", FireArmsMonitorSchema);
-export default FireArmsMonitor;
+const FireArmsMonitorLog = mongoose.model("FireArmsMonitorLog", FireArmsMonitorLogSchema);
+export default FireArmsMonitorLog;

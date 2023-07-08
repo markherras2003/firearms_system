@@ -43,13 +43,20 @@ const canWrite = computed(() => hasPermission('firearms:write', store.state.curr
 const canDelete = computed(() => hasPermission('firearms:delete', store.state.currentUserRole, store.state.roles));
 const canEdit = computed(() => hasPermission('firearms:edit', store.state.currentUserRole, store.state.roles));
 
-
 /*const getFieldValue = computed(() => {
   const selectedPersonnel = personneldata.value.find((personnel) => personnel._id === firearm.value.personnel_id);
   console.log(selectedPersonnel);
   return selectedPersonnel ? selectedPersonnel.fullname : '';
 });
 */
+const personnelId = ref(firearm.personnel_id);
+
+const fullnameField = computed(() => (option) => option.fullname + '-' + option.personnel_id);
+
+function getFullName(personnelId) {
+    const selectedPersonnel = personneldata.value.find((person) => person.personnel_id === personnelId);
+    return selectedPersonnel ? selectedPersonnel.fullname : 'No Personnel';
+}
 
 onMounted(async () => {
     try {
@@ -57,7 +64,6 @@ onMounted(async () => {
         const personnels = await firearmService.getPersonnels();
         firearms_data.value = data;
         personneldata.value = personnels;
-        console.log(personneldata.value);
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -85,18 +91,18 @@ const print = (printData) => {
 };
 
 const saveFireArm = async () => {
-    
     submitted.value = true;
-    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id , firearms_isperson , firearms_availability } = firearm.value || {};
+    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id, firearms_isperson, firearms_availability, personnel } = firearm.value || {};
+    console.log(firearm.value);
 
     if (!firearms_serialno || !firearms_qrcode || !firearms) {
         return null;
     }
 
-    if(!firearms_isperson) {
+    if (!firearms_isperson) {
         personnel_id = undefined;
     }
-    
+
     if (personnel_id === undefined) {
         personnel_id = null;
     } else {
@@ -113,7 +119,8 @@ const saveFireArm = async () => {
                 firearms,
                 firearms_isperson,
                 firearms_availability,
-                personnel_id: personnel_id
+                personnel_id: personnel_id,
+                personnel
             },
             {
                 headers: {
@@ -125,8 +132,11 @@ const saveFireArm = async () => {
         if (index > -1) {
             firearms_data.value[index] = firearm.value;
         }
-
+        const fullname = getFullName(personnel_id);
         firearm.value.personnel_id = personnel_id;
+        if (fullname != 'No Personnel') {
+            firearm.value.personnel.fullname = fullname;
+        }
         firearm.value = response.data;
         toast.add({
             severity: 'success',
@@ -135,7 +145,17 @@ const saveFireArm = async () => {
             life: 3000
         });
     } else {
-        firearms_serialno = generateID();
+        //console.log(firearms_serialno);
+        // firearms_serialno = generateID();
+        console.log(firearms_availability);
+        console.log(firearms_isperson);
+
+        if (firearms_availability === undefined) {
+            firearms_availability = false;
+        }
+        if (firearms_isperson === undefined) {
+            firearms_isperson = false;
+        }
         const response = await axios.post(
             `/firearms`,
             {
@@ -144,7 +164,8 @@ const saveFireArm = async () => {
                 firearms,
                 firearms_isperson,
                 firearms_availability,
-                personnel_id: personnel_id
+                personnel_id: personnel_id,
+                personnel
             },
             {
                 headers: {
@@ -154,7 +175,11 @@ const saveFireArm = async () => {
         );
 
         firearm.value.personnel_id = personnel_id;
-        firearm.value = response.data;
+        const fullname = getFullName(personnel_id);
+        firearm.value = response.data.data[0];
+        if (firearm.value.personnel_id !== undefined && firearm.value.personnel_id !== null) {
+            firearm.value.personnel.fullname = fullname;
+        }
         firearms_data.value.push(firearm.value);
 
         toast.add({
@@ -171,28 +196,22 @@ const saveFireArm = async () => {
 };
 
 const editFireArms = (editFireArms) => {
-  firearm.value = { ...editFireArms };
-  console.log(firearm.value);
+    firearm.value = { ...editFireArms };
 
-  const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms , firearms_availability } = editFireArms;
+    const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms, firearms_availability, personnel } = editFireArms;
 
-  firearm.value = {
-    _id,
-    firearms_serialno,
-    firearms_qrcode,
-    firearms,
-    personnel_id,
-    firearms_isperson,
-    firearms_availability
-  };
-  console.log(personnel_id);
-  firearmDialog.value = true;
+    firearm.value = {
+        _id,
+        firearms_serialno,
+        firearms_qrcode,
+        firearms,
+        personnel_id,
+        firearms_isperson,
+        firearms_availability,
+        personnel
+    };
+    firearmDialog.value = true;
 };
-
-
-const getSelectedPersonnel = computed(() => {
-  return personneldata.value.find((person) => person._id === firearm.value.personnel_id) || null;
-});
 
 const confirmDelete = (editFireArms) => {
     firearm.value = editFireArms;
@@ -258,24 +277,14 @@ const initFilters = () => {
     };
 };
 
-/*const searchPersonnel = (event) => {
-  const searchInput = event.target.value.toLowerCase();
-  autoFilteredValue.value = personneldata.value.filter(
-    (personnel) => personnel.fullname.toLowerCase().includes(searchInput)
-  );
-};
-*/
-
 const searchPersonnel = (event) => {
-  setTimeout(() => {
-    if (!event.query.trim().length) {
-      autoFilteredValue.value = [...personneldata.value];
-    } else {
-      autoFilteredValue.value = personneldata.value.filter((person) =>
-        String(person.fullname).toLowerCase().startsWith(event.query.toLowerCase())
-      );
-    }
-  }, 250);
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            autoFilteredValue.value = [...personneldata.value];
+        } else {
+            autoFilteredValue.value = personneldata.value.filter((person) => String(person.fullname).toLowerCase().startsWith(event.query.toLowerCase()));
+        }
+    }, 250);
 };
 </script>
 
@@ -340,20 +349,21 @@ const searchPersonnel = (event) => {
                                 {{ slotProps.data.firearms }}
                             </template>
                         </Column>
-                        <Column field="personnel_id" header="Personnel ID #" :sortable="true" headerStyle="width:25%; min-width:10rem;">
+                        <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:25%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms Serial No.</span>
-                                {{ slotProps.data.personnel_id }}
+                                <span class="p-column-title">Personnel</span>
+                                <template v-if="slotProps.data.personnel_id !== undefined && slotProps.data.personnel_id !== null">
+                                    {{ slotProps.data.personnel_id }} - <span v-if="slotProps.data.personnel.fullname !== undefined && slotProps.data.personnel.fullname !== null">{{ slotProps.data.personnel.fullname }}</span>
+                                </template>
+                                <template v-else>No Personnel</template>
                             </template>
                         </Column>
-
                         <Column field="firearms_availability" header="Firearms Availability" :sortable="true" headerStyle="width:25%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Availability.</span>
-                                {{ slotProps.data.firearms_availability }}
+                                <span style="text-align: center">{{ slotProps.data.firearms_availability ? 'Yes' : 'No' }}</span>
                             </template>
                         </Column>
-                 
 
                         <Column headerStyle="min-width:10rem;">
                             <template #body="slotProps">
@@ -368,7 +378,7 @@ const searchPersonnel = (event) => {
                         <div class="field">
                             <label for="name">Firearms Serial No.</label>
                             <InputText id="firearms_serialno" v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
-                            <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Firearms Serial No. is required.</small>
                         </div>
 
                         <div class="field">
@@ -384,19 +394,27 @@ const searchPersonnel = (event) => {
                         </div>
 
                         <label for="firearms_availability">Firearms Availability</label>
-                        <div class="field" style="margin-top: 10px;">
+                        <div class="field" style="margin-top: 10px">
                             <InputSwitch v-model="firearm.firearms_availability" />
                         </div>
 
                         <label for="firearms_isperson">Toggle if firearms is under personnel</label>
-                        <div class="field" style="margin-top: 10px;">
-                            <InputSwitch v-model="firearm.firearms_isperson" />
-                        </div>
+                        <div class="field" style="margin-top: 10px"><InputSwitch v-model="firearm.firearms_isperson" default: /></div>
 
                         <div class="field" v-if="firearm.firearms_isperson">
-                            <label for="personnel_id">Personnel</label>
                             <!--<Dropdown v-model.trim="firearm.personnel_id" :options="personneldata" optionLabel="personnel_id" placeholder="Select Personnel" />-->
-                            <AutoComplete placeholder="Search Personnel" id="dd" :dropdown="true" :multiple="false" v-model="firearm.personnel_id" :options="personneldata" :suggestions="autoFilteredValue" @complete="searchPersonnel($event)" field="fullname" />
+                            <AutoComplete
+                                placeholder="Search Personnel"
+                                id="dd"
+                                :dropdown="true"
+                                :multiple="false"
+                                v-model="firearm.personnel_id"
+                                :options="personneldata"
+                                :suggestions="autoFilteredValue"
+                                @complete="searchPersonnel($event)"
+                                :field="fullnameField"
+                            />
+                            <strong v-if="firearm.personnel_id">Personnel: {{ getFullName(firearm.personnel_id) }}</strong>
                         </div>
 
                         <template #footer>

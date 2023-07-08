@@ -49,6 +49,11 @@ const router = createRouter({
                     name: 'firearmsmonitoring',
                     component: () => import('@/views/pages/FireArmsMonitoring.vue')
                 },
+                {
+                    path: '/pages/firearmsmonitoringlog',
+                    name: 'firearmsmonitoringlog',
+                    component: () => import('@/views/pages/FireArmsMonitoringLog.vue')
+                },
             ]
         },
         {

@@ -1,7 +1,7 @@
 import FireArmsMonitor from "../models/FireArmsMonitor.js";
+import FireArmsMonitorLog from "../models/FireArmsMonitorLog.js";
 import Personnel from "../models/Personnel.js";
 import FireArms from "../models/FireArms.js";
-import FireArmsMonitorLog from "../models/FireArmsMonitorLog.js";
 
 /* Get Job Order value by id params */
 export const getFireArmMonitoring = async (req, res) => {
@@ -17,7 +17,7 @@ export const getFireArmMonitoring = async (req, res) => {
 /* Get all Personnels */
 export const getFireArmsMonitoring = async (req, res) => {
   try {
-    const firearms = await FireArmsMonitor.find();
+    const firearms = await FireArmsMonitorLog.find();
     /*const personnel = await Personnel.findById(firearms.personnel_id);
     console.log(firearms.personnel_id );
     */
@@ -34,7 +34,7 @@ export const getFireArmsMonitoring = async (req, res) => {
     return {
       _id: firearm._id,
       firearms_id: firearm.firearms_id,
-      firearms_monitor_id: firearm.firearms_monitor_id,
+      firearms_monitor_log_id: firearm.firearms_monitor_log_id,
       personnel_id: firearm.personnel_id,
       firearms_id: firearm.firearms_id,
       firearms_serialno: firearm.firearms_serialno,
@@ -57,11 +57,11 @@ res.status(200).json({ data });
 /* Job Order Save Executions */
 export const saveFireArmMonitoring = async (req, res) => {
   try {
-    const lastNumber = await FireArmsMonitor.findOne().sort({ firearms_monitor_id: -1 });
-    const nextNumberID = lastNumber ? lastNumber.firearms_monitor_id + 1 : 1001;
+    const lastNumber = await FireArmsMonitorLog.findOne().sort({ firearms_monitor_log_id: -1 });
+    const nextNumberID = lastNumber ? lastNumber.firearms_monitor_log_id + 1 : 1001;
 
     const {
-      firearms_monitor_id,
+      firearms_monitor_log_id,
       personnel_id,
       firearms_id,
       firearms_serialno,
@@ -70,8 +70,8 @@ export const saveFireArmMonitoring = async (req, res) => {
       check_out,
     } = req.body;
 
-    const newFireArm = new FireArmsMonitor({
-      firearms_monitor_id: nextNumberID,
+    const newFireArm = new FireArmsMonitorLog({
+      firearms_monitor_log_id: nextNumberID,
       personnel_id,
       firearms_id,
       firearms_serialno,
@@ -115,7 +115,7 @@ export const updateFireArmMonitoring = async (req, res) => {
 /* Delete Job Order Execution */
 export const deleteFireArmsMonitoring = async (req, res) => {
   try {
-    const deletedFirearms = await FireArmsMonitor.findByIdAndDelete(req.params._id);
+    const deletedFirearms = await FireArmsMonitorLog.findByIdAndDelete(req.params._id);
     if (!deletedFirearms) {
       return res.status(404).json({ message: 'Fire Arms Not not found' });
     }
