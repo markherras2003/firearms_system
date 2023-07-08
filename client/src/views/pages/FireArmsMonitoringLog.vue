@@ -446,11 +446,11 @@ const searchPersonnel = (event) => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['firearms']"
+                        :globalFilterFields="['fire_arms.firearms','firearms_serialno','personnel.fullname']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                                <h5 class="m-0">Manage Fire Arms Monitoring</h5>
+                                <h5 class="m-0">Manage Fire Arms Monitoring Logs</h5>
                                 <span class="block mt-2 md:mt-0 p-input-icon-left">
                                     <i class="pi pi-search" />
                                     <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -459,37 +459,37 @@ const searchPersonnel = (event) => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="firearms_monitor_log_id" header="Fire Arms Monitor ID." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_monitor_log_id" header="Log ID." :sortable="true" headerStyle="width:10%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms Monitor Log ID.</span>
+                                <span class="p-column-title">ID.</span>
                                 {{ slotProps.data.firearms_monitor_log_id }}
                             </template>
                         </Column>
-                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.firearms_serialno }}
                             </template>
                         </Column>
-                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.fire_arms.firearms }}
                             </template>
                         </Column>
-                        <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Personnel</span>
                                 {{ slotProps.data.personnel.fullname }}
                             </template>
                         </Column>
-                        <Column field="check_in" header="Check In" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="check_in" header="Check In" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Check In</span>
                                 {{ slotProps.data.check_in }}
                             </template>
                         </Column>
-                        <Column field="check_out" header="Check Out" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="check_out" header="Check Out" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Check Out</span>
                                 {{ slotProps.data.check_out }}

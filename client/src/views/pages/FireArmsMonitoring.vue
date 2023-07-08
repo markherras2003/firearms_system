@@ -7,9 +7,10 @@ import axios from 'axios';
 import InputText from 'primevue/inputtext';
 import { useStore } from 'vuex';
 import AccessDenied from '@/components/AccessDenied.vue';
+import { useRouter } from 'vue-router';
 
 const toast = useToast();
-
+const router = useRouter();
 const firearms_data = ref(null);
 //const firearms_monitoringdata = ref(null);
 const firearmDialog = ref(false);
@@ -246,7 +247,7 @@ const logFirearms = async (data) => {
                             Authorization: 'Bearer ' + localStorage.getItem('token')
                         }
                     });
-                    window.location.reload('/firearmsmonitoringlog');
+                    router.push('/pages/firearmsmonitoringlog');
                 }, 1000);
             }
             const response = await axios.put(
@@ -278,12 +279,13 @@ const logFirearms = async (data) => {
         const checkOutDate = new Date();
         const formattedCheckIn = checkInDate ? checkInDate.toLocaleString() : '';
         const formattedCheckOut = checkOutDate ? checkOutDate.toLocaleString() : '';
+        const f_status = firearms_availability;
 
-        if (firearms_availability) {
+        if (f_status) {
             const response = await axios.put(
                 `/firearmsmonitoring/${_id}`,
                 {
-                    check_out: firearms_availability ? formattedCheckOut : null
+                    check_out: f_status ? formattedCheckOut : null
                 },
                 {
                     headers: {
@@ -302,7 +304,7 @@ const logFirearms = async (data) => {
             const response = await axios.put(
                 `/firearmsmonitoring/${_id}`,
                 {
-                    check_in: !firearms_availability ? formattedCheckIn : null
+                    check_in: !f_status ? formattedCheckIn : null
                 },
                 {
                     headers: {
@@ -322,8 +324,7 @@ const logFirearms = async (data) => {
 
                 const firearms_datas_logs = await firearmService.getFireArmsID(data);
                 check_firearm_data_log.value = firearms_datas_logs;
-                //let {firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
-
+                let {firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
                 console.log(firearms_datas_logs);
             
 
@@ -348,14 +349,15 @@ const logFirearms = async (data) => {
                 }
             );
 
-            setTimeout(() => {
-                const response_delete = axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
+
+                const response_delete = await axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token')
                     }
                 });
-                window.location.reload('/firearmsmonitoringlog');
-            }, 1000);
+                setTimeout(() => {
+                    router.push('/pages/firearmsmonitoringlog');
+                }, 1500);
         }
 
         let set_val = false;
@@ -493,7 +495,7 @@ const searchPersonnel = (event) => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['firearms']"
+                        :globalFilterFields="['firearms_serialno','fire_arms.firearms','personnel.fullname']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -551,7 +553,7 @@ const searchPersonnel = (event) => {
                         </Column>
                     </DataTable>
 
-                    <Dialog v-model:visible="firearmDialog" :style="{ width: '800px' }" header="Firearms Details" :modal="true" class="p-fluid">
+                    <Dialog v-model:visible="firearmDialog" :style="{ width: '800px' }" header="Firearms Details" :modal="true" class="p-fluid" :closable="false">
                         <div class="formgrid grid">
                             <div class="field col">
                                 <label for="name"></label>
@@ -655,7 +657,5 @@ const searchPersonnel = (event) => {
 </template>
 <style scoped lang="scss">
 @import '@/assets/demo/styles/badges.scss';
-.p-dialog-header-close-icon.pi.pi-times {
-    display: none !important;
-}
+.p-dialog .p-dialog-header-icon { display: none!important; }
 </style>
