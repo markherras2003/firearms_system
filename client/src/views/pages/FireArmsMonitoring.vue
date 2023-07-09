@@ -149,8 +149,13 @@ const checkFirearms = async (data) => {
         }
 
         if (firearms_monitor != null) {
-            my_checkin.value = firearms_monitor.check_in || null;
-            my_checkout.value = firearms_monitor.check_out || null;
+            const checkInDate = firearms_monitor.check_in ? new Date(firearms_monitor.check_in) : null;
+            const checkOutDate = firearms_monitor.check_out ? new Date(firearms_monitor.check_out) : null;
+            const formattedCheckIn = checkInDate ? checkInDate.toLocaleString() : "";
+            const formattedCheckOut = checkOutDate ? checkOutDate.toLocaleString() : "";
+            
+            my_checkin.value = formattedCheckIn;
+            my_checkout.value = formattedCheckOut;
         }
     }
 };
@@ -615,7 +620,7 @@ const searchPersonnel = (event) => {
                                         <i class="pi pi-clock text-xl text-blue-500"></i>
                                     </div>
                                     <span class="text-700 line-height-3"
-                                        ><span class="text-700"> Check Out {{ my_checkout }}</span></span
+                                        ><span class="text-700"> Check Out : {{ my_checkout }}</span></span
                                     >
                                 </li>
                             </ul>
