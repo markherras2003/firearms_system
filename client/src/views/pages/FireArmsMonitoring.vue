@@ -151,9 +151,9 @@ const checkFirearms = async (data) => {
         if (firearms_monitor != null) {
             const checkInDate = firearms_monitor.check_in ? new Date(firearms_monitor.check_in) : null;
             const checkOutDate = firearms_monitor.check_out ? new Date(firearms_monitor.check_out) : null;
-            const formattedCheckIn = checkInDate ? checkInDate.toLocaleString() : "";
-            const formattedCheckOut = checkOutDate ? checkOutDate.toLocaleString() : "";
-            
+            const formattedCheckIn = checkInDate ? checkInDate.toLocaleString() : '';
+            const formattedCheckOut = checkOutDate ? checkOutDate.toLocaleString() : '';
+
             my_checkin.value = formattedCheckIn;
             my_checkout.value = formattedCheckOut;
         }
@@ -327,11 +327,10 @@ const logFirearms = async (data) => {
 
             console.log('Move to logs');
 
-                const firearms_datas_logs = await firearmService.getFireArmsID(data);
-                check_firearm_data_log.value = firearms_datas_logs;
-                let {firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
-                console.log(firearms_datas_logs);
-            
+            const firearms_datas_logs = await firearmService.getFireArmsID(data);
+            check_firearm_data_log.value = firearms_datas_logs;
+            let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
+            console.log(firearms_datas_logs);
 
             if (personnel_id === null) {
                 personnel_id = firearms_monitor.personnel_id;
@@ -354,15 +353,14 @@ const logFirearms = async (data) => {
                 }
             );
 
-
-                const response_delete = await axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token')
-                    }
-                });
-                setTimeout(() => {
-                    router.push('/pages/firearmsmonitoringlog');
-                }, 1500);
+            const response_delete = await axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            setTimeout(() => {
+                router.push('/pages/firearmsmonitoringlog');
+            }, 1500);
         }
 
         let set_val = false;
@@ -500,7 +498,7 @@ const searchPersonnel = (event) => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['firearms_serialno','fire_arms.firearms','personnel.fullname']"
+                        :globalFilterFields="['firearms_serialno', 'fire_arms.firearms', 'personnel.fullname']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -526,8 +524,8 @@ const searchPersonnel = (event) => {
                             </template>
                         </Column>
                         <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-                            <template #body="slotProps">
-                                <span class="p-column-title">Fire Arms.</span>
+                            <span class="p-column-title">Fire Arms.</span>
+                            <template v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
                                 {{ slotProps.data.fire_arms.firearms }}
                             </template>
                         </Column>
@@ -662,5 +660,7 @@ const searchPersonnel = (event) => {
 </template>
 <style scoped lang="scss">
 @import '@/assets/demo/styles/badges.scss';
-.p-dialog .p-dialog-header-icon { display: none!important; }
+.p-dialog .p-dialog-header-icon {
+    display: none !important;
+}
 </style>
