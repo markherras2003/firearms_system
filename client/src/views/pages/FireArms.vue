@@ -353,7 +353,8 @@ const searchPersonnel = (event) => {
                             <template #body="slotProps">
                                 <span class="p-column-title">Personnel</span>
                                 <template v-if="slotProps.data.personnel_id !== undefined && slotProps.data.personnel_id !== null">
-                                    {{ slotProps.data.personnel_id }} - <span v-if="slotProps.data.personnel.fullname !== undefined && slotProps.data.personnel.fullname !== null">{{ slotProps.data.personnel.fullname }}</span>
+                                    {{ slotProps.data.personnel_id }} -
+                                    <span v-if="slotProps.data.personnel !== null && slotProps.data.personnel.fullname !== undefined && slotProps.data.personnel.fullname !== null">{{ slotProps.data.personnel.fullname }}</span>
                                 </template>
                                 <template v-else>No Personnel</template>
                             </template>

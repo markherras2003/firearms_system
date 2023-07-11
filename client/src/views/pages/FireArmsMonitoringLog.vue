@@ -217,8 +217,7 @@ const logFirearms = async (data) => {
                 let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
                 console.log(firearms_datas_log);
 
-
-                if (personnel_id===null) {
+                if (personnel_id === null) {
                     personnel_id = firearms_monitor.personnel_id;
                 }
 
@@ -229,8 +228,8 @@ const logFirearms = async (data) => {
                         firearms_qrcode,
                         firearms_id,
                         personnel_id,
-                        check_in:firearms_monitor.check_in,
-                        check_out:firearms_monitor.check_out
+                        check_in: firearms_monitor.check_in,
+                        check_out: firearms_monitor.check_out
                     },
                     {
                         headers: {
@@ -238,7 +237,6 @@ const logFirearms = async (data) => {
                         }
                     }
                 );
-
             }
             const response = await axios.put(
                 `firearms/setavailability/${_id}`,
@@ -446,7 +444,7 @@ const searchPersonnel = (event) => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['fire_arms.firearms','firearms_serialno','personnel.fullname']"
+                        :globalFilterFields="['fire_arms.firearms', 'firearms_serialno', 'personnel.fullname']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -474,7 +472,9 @@ const searchPersonnel = (event) => {
                         <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
-                                {{ slotProps.data.fire_arms.firearms }}
+                                <template v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
+                                    {{ slotProps.data.fire_arms.firearms }}
+                                </template>
                             </template>
                         </Column>
                         <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:22%; min-width:10rem;">
