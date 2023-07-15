@@ -55,5 +55,4 @@ export default class FireArmsService {
         });
         return response.data.data;
     }
-
 }

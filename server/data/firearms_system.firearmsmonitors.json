@@ -1,33 +1,63 @@
 [{
   "_id": {
-    "$oid": "649fb7626da3dc1bfc32c27f"
+    "$oid": "64acd76b7bdd121b518acbe4"
   },
-  "firearms_monitor_id": "1001",
-  "personnel_id": "1001",
-  "firearms_id": "1004",
-  "firearms_serialno": "SERIAL-1234XYZ",
-  "check_in": "",
-  "check_out": ""
+  "firearms_monitor_id": 1001,
+  "personnel_id": 1011,
+  "firearms_id": 1006,
+  "firearms_serialno": "AFP 06098711",
+  "firearms_qrcode": "AFP 06098711",
+  "check_in": null,
+  "check_out": {
+    "$date": "2023-07-11T04:15:39.000Z"
+  },
+  "createdAt": {
+    "$date": "2023-07-11T04:15:39.629Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T04:15:39.629Z"
+  },
+  "__v": 0
 },
 {
   "_id": {
-    "$oid": "649fcd4bf247fc5fdd776bf4"
+    "$oid": "64ad07cacebafcadc9573f8a"
   },
-  "firearms_monitor_id": "1002",
-  "personnel_id": "1002",
-  "firearms_id": "1005",
-  "firearms_serialno": "SERIAL-1234XYZ1",
-  "check_in": "",
-  "check_out": ""
+  "firearms_monitor_id": 1002,
+  "personnel_id": 1001,
+  "firearms_id": 1001,
+  "firearms_serialno": "AFP 009335",
+  "firearms_qrcode": "AFP 009335",
+  "check_in": null,
+  "check_out": {
+    "$date": "2023-07-11T07:42:02.000Z"
+  },
+  "createdAt": {
+    "$date": "2023-07-11T07:42:02.714Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T07:42:02.714Z"
+  },
+  "__v": 0
 },
 {
   "_id": {
-    "$oid": "649fcd876da3dc1bfc32c285"
+    "$oid": "64ad0e21cebafcadc95742b9"
   },
-  "firearms_monitor_id": "1003",
-  "personnel_id": "1003",
-  "firearms_id": "1004",
-  "firearms_serialno": "SERIAL-1234XYZ111",
-  "check_in": "",
-  "check_out": ""
+  "firearms_monitor_id": 1003,
+  "personnel_id": 1004,
+  "firearms_id": 1003,
+  "firearms_serialno": "AFP 056416",
+  "firearms_qrcode": "AFP 056416",
+  "check_in": null,
+  "check_out": {
+    "$date": "2023-07-11T08:09:05.000Z"
+  },
+  "createdAt": {
+    "$date": "2023-07-11T08:09:05.227Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T08:09:05.227Z"
+  },
+  "__v": 0
 }]

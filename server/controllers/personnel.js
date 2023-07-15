@@ -22,6 +22,8 @@ export const getPersonnels = async (req, res) => {
       fullname,
       personnel_rank,
       personnel_brsvc,
+      personnel_office,
+      personnel_contact,
       personnel_email,
       createdAt
     }) => ({
@@ -31,6 +33,8 @@ export const getPersonnels = async (req, res) => {
       fullname,
       personnel_rank,
       personnel_brsvc,
+      personnel_office,
+      personnel_contact,
       personnel_email,
       createdAt: createdAt.toISOString().split('T')[0]
     }));
@@ -70,6 +74,8 @@ export const savePersonnel = async (req, res) => {
       serial_no,
       personnel_rank,
       personnel_brsvc,
+      personnel_office,
+      personnel_contact,
       personnel_email
     } = req.body;
 
@@ -79,6 +85,8 @@ export const savePersonnel = async (req, res) => {
       serial_no,
       personnel_rank,
       personnel_brsvc,
+      personnel_office,
+      personnel_contact,
       personnel_email
     });
 
@@ -98,6 +106,8 @@ export const updatePersonnel = async (req, res) => {
         serial_no,
         personnel_rank,
         personnel_brsvc,
+        personnel_office,
+        personnel_contact,
         personnel_email
     } = req.body;
 
@@ -106,6 +116,8 @@ export const updatePersonnel = async (req, res) => {
         serial_no,
         personnel_rank,
         personnel_brsvc,
+        personnel_office,
+        personnel_contact,
         personnel_email
     };
 

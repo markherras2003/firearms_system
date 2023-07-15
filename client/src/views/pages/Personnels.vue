@@ -24,6 +24,7 @@ const user = ref(null);
 const store = useStore();
 const ranksdata = ref([]);
 const svcdata = ref([]);
+const personnelofficedata = ref([]);
 
 onBeforeMount(() => {
     initFilters();
@@ -48,9 +49,11 @@ onMounted(async () => {
         const data = await personnelService.getPersonnels();
         const ranks = await personnelService.getPersonnelsRank();
         const svc = await personnelService.getPersonnelsSVC();
+        const personneloffice = await personnelService.getPersonnelOffice();
         personnels.value = data;
         ranksdata.value = ranks;
         svcdata.value = svc;
+        personnelofficedata.value = personneloffice;
         console.log(data);
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
@@ -86,11 +89,13 @@ const savePersonnel = async () => {
       personnel_id,
       serial_no,
       fullname,
-      personnel_rank: { personnel_rank: personnel_rank } = {},  // Add a default value of an empty object
-      personnel_brsvc: { personnel_brsvc: personnel_brsvc } = {},  // Add a default value of an empty object
+      personnel_contact,
+      personnel_rank: { personnel_rank: personnel_rank } = {},
+      personnel_brsvc: { personnel_brsvc: personnel_brsvc } = {},
+      personnel_office: { personnel_office: personnel_office } = {},
       personnel_email } = personnel.value || {};
 
-    if (!fullname || !personnel_email || !personnel_brsvc || !personnel_brsvc || !serial_no) {
+    if (!fullname || !serial_no) {
         return null;
     }
 
@@ -104,6 +109,8 @@ const savePersonnel = async () => {
                 fullname,
                 personnel_rank,
                 personnel_brsvc,
+                personnel_office,
+                personnel_contact,
                 personnel_email
             },
             {
@@ -118,35 +125,42 @@ const savePersonnel = async () => {
         }
         personnel.value.personnel_rank = personnel_rank;
         personnel.value.personnel_brsvc = personnel_brsvc;
+        personnel.value.personnel_office = personnel_office;
         personnel.value = response.data;
         toast.add({ severity: 'success', summary: 'Successful', detail: 'Personnel Updated', life: 3000 });
     } else {
         personnel_id = generateID();
-        const response = await axios.post(
-            `/personnel`,
-            {
-                personnel_id,
-                serial_no,
-                fullname,
-                personnel_rank,
-                personnel_brsvc,
-                personnel_email
-            },
-            {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
+        try {
+            const response = await axios.post(
+                `/personnel`,
+                {
+                    personnel_id,
+                    serial_no,
+                    fullname,
+                    personnel_rank,
+                    personnel_brsvc,
+                    personnel_office,
+                    personnel_contact,
+                    personnel_email
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
                 }
+            );
+            personnel.value = response.data;
+            personnels.value.push(personnel.value);
+            toast.add({ severity: 'success', summary: 'Successful', detail: 'Personnel Created', life: 3000 });
+        } catch (error) {
+            if (error.response && error.response.status === 500 && error.response.data.error.includes('duplicate')) {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'Personnel with the same serial number already exists', life: 3000 });
+            } else {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to create personnel', life: 3000 });
             }
-        );
-        // Set joborder.value to response data
-
-        personnel.value = response.data;
-        personnels.value.push(personnel.value);
-
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Personnel Created', life: 3000 });
+        }
     }
     personnelDialog.value = false;
-    // Clear joborder.value
     personnel.value = {};
 };
 
@@ -159,14 +173,18 @@ const editPersonnel = (editPersonnel) => {
       serial_no,
       personnel_rank,
       personnel_brsvc ,
+      personnel_office,
+      personnel_contact,
       personnel_email } = editPersonnel;
       personnel.value = {
         _id,
         fullname,
         personnel_id,
         serial_no,
+        personnel_contact,
         personnel_rank: { personnel_rank : personnel_rank},
         personnel_brsvc : {personnel_brsvc : personnel_brsvc},
+        personnel_office : {personnel_office : personnel_office},
         personnel_email,
     };
     console.log(personnel.value);
@@ -274,7 +292,7 @@ const initFilters = () => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Personnels"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['fullname', 'personnel_id']"
+                        :globalFilterFields="['fullname','serial_no', 'personnel_id']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -287,15 +305,9 @@ const initFilters = () => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="personnel_id" header="Personnel ID #" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="serial_no" header="AFP Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
-                                <span class="p-column-title">Personnel ID #</span>
-                                {{ slotProps.data.personnel_id }}
-                            </template>
-                        </Column>
-                        <Column field="serial_no" header="Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
-                            <template #body="slotProps">
-                                <span class="p-column-title">Serial No.</span>
+                                <span class="p-column-title">AFP Serial No.</span>
                                 {{ slotProps.data.serial_no }}
                             </template>
                             <template #filter="{ filterModel }">
@@ -311,22 +323,25 @@ const initFilters = () => {
                                 <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by fullname" />
                             </template>
                         </Column>
-                        <Column field="personnel_rank" header="Rank" :sortable="true" headerStyle="width:20%; min-width:8rem;">
-                            <template #body="slotProps">
-                                <span class="p-column-title">Rank</span>
-                                {{ slotProps.data.personnel_rank }}
-                            </template>
-                        </Column>
-                        <Column field="personnel_brsvc" header="BR SVC" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-                            <template #body="slotProps">
-                                <span class="p-column-title">BR SVC</span>
-                                {{ slotProps.data.personnel_brsvc }}
-                            </template>
-                        </Column>
                         <Column field="personnel_email" header="Email" :sortable="true" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Email</span>
                                 {{ slotProps.data.personnel_email }}
+                            </template>
+                        </Column>
+
+                        <Column field="personnel_contact" header="Contact" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Contact</span>
+                                {{ slotProps.data.personnel_contact }}
+                            </template>
+                        </Column>
+                    
+
+                        <Column field="personnel_office" header="Office" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Office</span>
+                                {{ slotProps.data.personnel_office }}
                             </template>
                         </Column>
                     
@@ -341,34 +356,29 @@ const initFilters = () => {
 
                     <Dialog v-model:visible="personnelDialog" :style="{ width: '600px' }" header="Personnel Details" :modal="true" class="p-fluid">
                         <div class="field">
-                            <label for="name">Serial No.</label>
+                            <label for="name">AFP Serial No.</label>
                             <InputText id="serial_no" v-model.trim="personnel.serial_no" required="true" autofocus :class="{ 'p-invalid': submitted && !personnel.serial_no }" />
                             <small class="p-invalid" v-if="submitted && !personnel.serial_no">Serial No. is required.</small>
                         </div>
                         <div class="field">
-                            <label for="name">Fullname</label>
+                            <label for="name">Fullname (RANK/NAME/BOS)</label>
                             <InputText id="fullname" v-model.trim="personnel.fullname" required="true" autofocus :class="{ 'p-invalid': submitted && !personnel.fullname }" />
                             <small class="p-invalid" v-if="submitted && !personnel.fullname">Full Name is required.</small>
                         </div>
                         <div class="field">
                             <label for="personnel_email">Email</label>
-                            <InputText id="personnel_email" v-model.trim="personnel.personnel_email" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.personnel_email }" />
-                            <small class="p-invalid" v-if="submitted && !personnel.personnel_email">Email is required.</small>
+                            <InputText id="personnel_email" v-model.trim="personnel.personnel_email" required="false" rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.personnel_email }" />
                         </div>
 
                         <div class="field">
-                            <label for="personnel_rank">Personnel Rank</label>
-                            <Dropdown v-model="personnel.personnel_rank" :options="ranksdata" optionLabel="personnel_rank" placeholder="Select Rank"  :class="{ 'p-invalid': submitted && !personnel.personnel_rank }" />
-                            <small class="p-invalid mb-2" v-if="submitted && !personnel.personnel_rank">Rank required.</small>
+                            <label for="name">Contact#</label>
+                            <InputText id="contact" v-model.trim="personnel.personnel_contact" required="true" autofocus />
                         </div>
 
                         <div class="field">
-                            <label for="personnel_brsvc">BR SVC</label>
-                            <Dropdown v-model="personnel.personnel_brsvc" :options="svcdata" optionLabel="personnel_brsvc" placeholder="Select SVC"  :class="{ 'p-invalid': submitted && !personnel.personnel_brsvc }" />
-                            <small class="p-invalid mb-2" v-if="submitted && !personnel.personnel_brsvc">BR SVC  required.</small>
+                            <label for="personnel_brsvc">Office</label>
+                            <Dropdown v-model="personnel.personnel_office" :options="personnelofficedata" optionLabel="personnel_office" placeholder="Select Office" />
                         </div>
-
-
 
                         <template #footer>
                             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />

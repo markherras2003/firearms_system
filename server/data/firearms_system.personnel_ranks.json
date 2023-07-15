@@ -1,0 +1,120 @@
+[{
+  "_id": {
+    "$oid": "9d7f1b9eaa7d73e912be18c7"
+  },
+  "personnel_rank": "AM"
+},
+{
+  "_id": {
+    "$oid": "e2a829f88a37b62d9fcf3b0a"
+  },
+  "personnel_rank": "AW"
+},
+{
+  "_id": {
+    "$oid": "643b0e65b8456de1f7b134e2"
+  },
+  "personnel_rank": "A2C"
+},
+{
+  "_id": {
+    "$oid": "7db9c2d49b857a24ef5e6371"
+  },
+  "personnel_rank": "A1C"
+},
+{
+  "_id": {
+    "$oid": "98c12e87e23a58760a70bd93"
+  },
+  "personnel_rank": "AW2C"
+},
+{
+  "_id": {
+    "$oid": "e53ac70f76924f3b58f7c687"
+  },
+  "personnel_rank": "AW1C"
+},
+{
+  "_id": {
+    "$oid": "3f78a1b6e59408d29ef087dc"
+  },
+  "personnel_rank": "Sgt(T)"
+},
+{
+  "_id": {
+    "$oid": "d49be39a5042714cf8b4e964"
+  },
+  "personnel_rank": "Sgt"
+},
+{
+  "_id": {
+    "$oid": "293e6a2bfc79c5c4e4d3a8c6"
+  },
+  "personnel_rank": "SSG(T)"
+},
+{
+  "_id": {
+    "$oid": "a4f9c83b83d76e48a5b29c07"
+  },
+  "personnel_rank": "SSG"
+},
+{
+  "_id": {
+    "$oid": "09125401d036aa8abecb486f"
+  },
+  "personnel_rank": "TSg"
+},
+{
+  "_id": {
+    "$oid": "56d28f89cb6838906c819f4d"
+  },
+  "personnel_rank": "MSg"
+},
+{
+  "_id": {
+    "$oid": "e4d3254a84b047a0f6e98b10"
+  },
+  "personnel_rank": "SMS"
+},
+{
+  "_id": {
+    "$oid": "7d1e9e344f4b635e77971fb2"
+  },
+  "personnel_rank": "2LT"
+},
+{
+  "_id": {
+    "$oid": "a8438d72ee6c3f65a8188e3e"
+  },
+  "personnel_rank": "1LT"
+},
+{
+  "_id": {
+    "$oid": "b872c03e7a699b58d7d1a0dc"
+  },
+  "personnel_rank": "CPT"
+},
+{
+  "_id": {
+    "$oid": "c5acdd64d2730a3e7d7ae0e9"
+  },
+  "personnel_rank": "MAJ"
+},
+{
+  "_id": {
+    "$oid": "f3dc8a69d5849b62164b334a"
+  },
+  "personnel_rank": "COL"
+},
+{
+  "_id": {
+    "$oid": "9be33dcdd0de62a7c830d32d"
+  },
+  "personnel_rank": "BGEN"
+},
+{
+  "_id": {
+    "$oid": "649e216cb9e9c36687bc3469"
+  },
+  "personnel_rank": "LTC"
+}]

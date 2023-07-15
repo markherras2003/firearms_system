@@ -31,9 +31,11 @@ export const getFireArmID = async (req, res) => {
         firearms: firearm.firearms,
         firearms_id: firearm.firearms_id,
         personnel_id: firearm.personnel_id,
+        firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_serialno: firearm.firearms_serialno,
         firearms_qrcode: firearm. firearms_qrcode,
         firearms_status: firearm.firearms_status,
+        firearms_purpose:firearm.firearms_purpose,
         firearms_isperson: firearm.firearms_isperson,
         firearms_availability: firearm.firearms_availability,
         firearms_monitor,
@@ -62,11 +64,13 @@ export const getFireArmIDLog = async (req, res) => {
       return {
         _id : firearm._id,
         firearms: firearm.firearms,
+        firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_id: firearm.firearms_id,
         personnel_id: firearm.personnel_id,
         firearms_serialno: firearm.firearms_serialno,
         firearms_qrcode: firearm. firearms_qrcode,
         firearms_status: firearm.firearms_status,
+        firearms_purpose:firearm.firearms_purpose,
         firearms_isperson: firearm.firearms_isperson,
         firearms_availability: firearm.firearms_availability,
         firearms_monitor,
@@ -122,6 +126,7 @@ export const getFireArms = async (req, res) => {
         personnel_id: firearm.personnel_id,
         firearms_serialno: firearm.firearms_serialno,
         firearms_qrcode: firearm.firearms_qrcode,
+        firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_status: firearm.firearms_status,
         firearms_isperson: firearm.firearms_isperson,
         firearms_availability: firearm.firearms_availability,
@@ -150,6 +155,7 @@ export const saveFireArm = async (req, res) => {
       firearms_qrcode,
       firearms_id,
       firearms_isperson,
+      firearms_buttnumber,
       firearms_availability,
     } = req.body;
 
@@ -160,6 +166,7 @@ export const saveFireArm = async (req, res) => {
       firearms_qrcode,
       firearms_id: nextNumberID,
       firearms_isperson,
+      firearms_buttnumber,
       firearms_availability
     });
 
@@ -177,6 +184,7 @@ export const saveFireArm = async (req, res) => {
         firearms_qrcode: firearm.firearms_qrcode,
         firearms_status: firearm.firearms_status,
         firearms_isperson: firearm.firearms_isperson,
+        firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_availability: firearm.firearms_availability,
         personnel,
       };
@@ -198,6 +206,7 @@ export const updateFireArm = async (req, res) => {
       firearms_serialno,
       firearms_qrcode,
       firearms_isperson,
+      firearms_buttnumber,
       firearms_availability
     } = req.body;
 
@@ -207,6 +216,7 @@ export const updateFireArm = async (req, res) => {
       firearms_serialno,
       firearms_qrcode,
       firearms_isperson,
+      firearms_buttnumber,
       firearms_availability
     };
 

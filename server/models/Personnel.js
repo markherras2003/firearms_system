@@ -21,19 +21,31 @@ const PersonnelSchema = new mongoose.Schema(
         },
         personnel_rank: {
             type: String,
-            required: true,
+            required: false,
             min: 2,
             max: 50,
         },
         personnel_brsvc: {
             type: String,
-            required: true,
+            required: false,
+            min: 2,
+            max: 50,
+        },
+        personnel_office: {
+            type: String,
+            required: false,
+            min: 2,
+            max: 50,
+        },
+        personnel_contact: {
+            type: String,
+            required: false,
             min: 2,
             max: 50,
         },
         personnel_email: {
             type: String,
-            required: true,
+            required: false,
             default: true,
             unique:true
         }

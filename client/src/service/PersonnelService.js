@@ -42,4 +42,19 @@ export default class PersonnelService {
         });
         return response.data.data;
     }
+
+    async getPersonnelOffice() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
+        const response = await axios.get(`/personnel_office`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        return response.data.data;
+    }
+
+
 }

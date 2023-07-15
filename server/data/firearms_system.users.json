@@ -1,0 +1,34 @@
+[{
+  "_id": {
+    "$oid": "649912d0fe0eda7684706305"
+  },
+  "firstName": "leslie",
+  "lastName": "Sermonia",
+  "email": "ellisematthew.1990@gmail.com",
+  "password": "$2b$10$YGHY.u98m5nRjWj9NOUk8uh9NwpxnnQOiJkc2/CsDsZV9ag0n8o8q",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2023-06-26T04:23:44.058Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-26T04:23:44.058Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64aa65d41efd7ec0ca180286"
+  },
+  "firstName": "Gerald",
+  "lastName": "Paran",
+  "email": "ellisematthew1234.1990@gmail.com",
+  "password": "$2b$10$py/6iu2ZnwD1udAsjmHoPO.XsKR2uNYscfr0uqjz8/cyheFCkXxA2",
+  "role": "editor",
+  "createdAt": {
+    "$date": "2023-07-09T07:46:28.255Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-09T07:46:28.255Z"
+  },
+  "__v": 0
+}]

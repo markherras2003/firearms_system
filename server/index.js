@@ -14,6 +14,8 @@ import personnelRankRoutes from "./routes/personnel_rank.js";
 import personnelSVCRoutes from "./routes/personnel_svc.js"
 import firearmsMonitorRoutes from "./routes/firearmsmonitoring.js"
 import firearmsMonitorLogRoutes from "./routes/firearmsmonitoringlog.js"
+import personnelOfficeRoutes from "./routes/personnel_office.js"
+import firearmsListRoutes from "./routes/firearms_list.js"
 
 import { roles, permissions } from "./data/index.js";
 
@@ -54,6 +56,12 @@ app.use("/personnel_rank", personnelRankRoutes);
 
 // Routers for Job Order
 app.use("/personnel_svc", personnelSVCRoutes);
+
+// Routers for Job Order
+app.use("/personnel_office", personnelOfficeRoutes);
+
+// Routers for Job Order
+app.use("/firearms_list", firearmsListRoutes);
 
 //
 app.use("/roles", roleRoutes);

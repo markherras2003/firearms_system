@@ -21,6 +21,16 @@ const FireArmsMonitorLogSchema = new mongoose.Schema(
             min: 2,
             max: 50,
         },
+        firearms_purpose: {
+            type: String,
+            min: 2,
+            max: 50,
+        },
+        firearms_status: {
+            type: String,
+            min: 2,
+            max: 50,
+        },
         firearms_qrcode: {
             type: String,
             min: 2,

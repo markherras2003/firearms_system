@@ -35,7 +35,10 @@ const checkstatus = ref('');
 const isFirearms = ref(false);
 const check_firearm_data = ref([null]);
 const my_firearm = ref('');
+const my_butt = ref('');
 const my_availability = ref(false);
+const my_status = ref('');
+const my_purpose = ref('');
 const personnel_fullname = ref('');
 const my_firearm_isperson = ref(false);
 const my_checkin = ref('');
@@ -45,6 +48,13 @@ const select_personnel_id = ref('');
 onBeforeMount(() => {
     initFilters();
 });
+
+const handleEnterKey = (data) => {
+    isFirearms.value = false;
+    submitted.value = false;
+    firearmDialog.value = true;
+    checkFirearms(data);
+}
 
 const fullnameField = computed(() => (option) => option.fullname + '-' + option.personnel_id);
 
@@ -105,7 +115,7 @@ const hideDialog = () => {
 const checkFirearms = async (data) => {
     const firearms_datas = await firearmService.getFireArmsID(data);
     check_firearm_data.value = firearms_datas;
-    let { _id, firearms_serialno, firearms, firearms_availability, personnel, firearms_monitor, firearms_isperson, personnel_id } = check_firearm_data.value[0] || {};
+    let { _id, firearms_serialno, firearms, firearms_buttnumber,firearms_availability, personnel, firearms_monitor,firearms_purpose,firearms_status, firearms_isperson, personnel_id } = check_firearm_data.value[0] || {};
     temp_id.value = data;
     my_checkin.value = null;
     my_checkout.value = null;
@@ -124,6 +134,8 @@ const checkFirearms = async (data) => {
         my_firearm_isperson.value = true;
         isFirearms.value = true;
         my_firearm.value = firearms;
+        
+        my_butt.value = firearms_buttnumber;
         my_availability.value = firearms_availability;
         if (firearms_availability) {
             checkstatus.value = 'Check Out';
@@ -163,7 +175,7 @@ const checkFirearms = async (data) => {
 const logFirearms = async (data) => {
     const firearms_datas = await firearmService.getFireArmsID(data);
     check_firearm_data.value = firearms_datas;
-    let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
+    let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
     temp_id.value = _id;
 
     console.log(firearms_datas);
@@ -199,6 +211,8 @@ const logFirearms = async (data) => {
             {
                 firearms_serialno,
                 firearms_qrcode,
+                firearms_status: my_status.value,
+                firearms_purpose: my_purpose.value,
                 firearms_id,
                 personnel_id,
                 check_in: !firearms_availability ? formattedCheckIn : null,
@@ -220,7 +234,7 @@ const logFirearms = async (data) => {
                 console.log('Move to logs');
                 const firearms_datas_log = await firearmService.getFireArmsID(data);
                 check_firearm_data.value = firearms_datas_log;
-                let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
+                let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
                 console.log(firearms_datas_log);
 
                 if (personnel_id === null) {
@@ -233,6 +247,8 @@ const logFirearms = async (data) => {
                         firearms_serialno,
                         firearms_qrcode,
                         firearms_id,
+                        firearms_status: my_status.value,
+                        firearms_purpose: my_purpose.value,
                         personnel_id,
                         check_in: firearms_monitor.check_in,
                         check_out: firearms_monitor.check_out
@@ -329,7 +345,7 @@ const logFirearms = async (data) => {
 
             const firearms_datas_logs = await firearmService.getFireArmsID(data);
             check_firearm_data_log.value = firearms_datas_logs;
-            let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
+            let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
             console.log(firearms_datas_logs);
 
             if (personnel_id === null) {
@@ -341,7 +357,9 @@ const logFirearms = async (data) => {
                 {
                     firearms_serialno,
                     firearms_qrcode,
-                    firearms_id,
+                    firearms_id,    
+                    firearms_status: my_status.value,
+                    firearms_purpose: my_purpose.value,
                     personnel_id,
                     check_in: firearms_monitor.check_in,
                     check_out: firearms_monitor.check_out
@@ -385,6 +403,7 @@ const logFirearms = async (data) => {
             checkFirearms(firearms_serialno);
         }, 500);
     }
+    
 };
 
 const confirmDelete = (editFireArms) => {
@@ -474,8 +493,9 @@ const searchPersonnel = (event) => {
                     <Toolbar class="mb-4">
                         <template v-slot:start>
                             <div class="my-2">
-                                <Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+                                <!--<Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />-->
                                 <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedFireArms || !selectedFireArms.length" />
+                                <InputText id="firearms_serialno" placeholder="Firearms Serial No." v-model.trim="firearm.firearms_serialno" class="ml-2" @keyup.enter="handleEnterKey(firearm.firearms_serialno)" />
                             </div>
                         </template>
 
@@ -579,13 +599,23 @@ const searchPersonnel = (event) => {
                         </div>
 
                         <div v-if="isFirearms" class="field">
-                            <span class="block text-600 font-medium mb-3"
-                                ><strong>Firearms : {{ my_firearm }}</strong></span
-                            >
+                            <span class="block text-600 font-medium mb-3"><strong>Firearms : {{ my_firearm }}</strong></span>
+                            <span class="block text-600 font-medium mb-3"><strong>Butt Number : {{ my_butt }}</strong></span>
                             <span>
                                 Availability :
                                 <Tag class="mr-4" :severity="my_availability ? 'success' : 'danger'"> {{ my_availability ? 'Yes' : 'Not Available' }}</Tag>
                             </span>
+                           
+                            <div class="field" v-if="my_availability">
+                            <label for="my_purpose">Firearms Purpose</label>
+                            <InputText v-model="my_purpose" required="true" rows="3" cols="20" />
+                            </div>
+
+                            <div class="field" v-if="!my_availability">
+                            <label for="my_status">Firearms Status</label>
+                            <InputText v-model="my_status" required="true" rows="3" cols="20" />
+                            </div>
+
                             <div class="mt-3">
                                 <Chip :label="personnel_fullname" :image="'demo/images/avatar/default.jpg'" class="mr-2 mb-2"></Chip>
                             </div>

@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "648551c2d4593a462d3578b8"
+  },
+  "personnel_brsvc": "PAF"
+},
+{
+  "_id": {
+    "$oid": "648551c2d4593a462d3578b9"
+  },
+  "personnel_brsvc": "PA"
+},
+{
+  "_id": {
+    "$oid": "648551c2d4593a462d3578ba"
+  },
+  "personnel_brsvc": "PN"
+}]

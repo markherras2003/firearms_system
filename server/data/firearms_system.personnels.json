@@ -1,0 +1,450 @@
+[{
+  "_id": {
+    "$oid": "649e1e1ad657c53723df8b48"
+  },
+  "personnel_id": 1001,
+  "serial_no": "O-10659",
+  "fullname": "DENNIS G ESTRELLA",
+  "personnel_rank": "BGEN",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "A",
+  "createdAt": {
+    "$date": "2023-06-30T00:13:14.775Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:13:24.366Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e1eadd657c53723df8b55"
+  },
+  "personnel_id": 1002,
+  "serial_no": "O-10886",
+  "fullname": "JOSEL J ZUÑIGA",
+  "personnel_rank": "COL",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "B",
+  "createdAt": {
+    "$date": "2023-06-30T00:15:41.205Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:15:41.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e1ef7d657c53723df8b58"
+  },
+  "personnel_id": 1003,
+  "serial_no": "O-11932",
+  "fullname": "RHOSSEL R DUQUE",
+  "personnel_rank": "COL",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "C",
+  "createdAt": {
+    "$date": "2023-06-30T00:16:55.558Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:16:55.558Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e1fafd657c53723df8b5b"
+  },
+  "personnel_id": 1004,
+  "serial_no": "O-134312",
+  "fullname": "MELVIN A TAGHAP",
+  "personnel_rank": "LTC",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "D",
+  "createdAt": {
+    "$date": "2023-06-30T00:19:59.934Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:30:43.276Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e1fe0d657c53723df8b5e"
+  },
+  "personnel_id": 1005,
+  "serial_no": "O-135765",
+  "fullname": "MARIE FE M CARPENETTI",
+  "personnel_rank": "LTC",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "E",
+  "createdAt": {
+    "$date": "2023-06-30T00:20:48.327Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:30:57.749Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2021d657c53723df8b61"
+  },
+  "personnel_id": 1006,
+  "serial_no": "O-135865",
+  "fullname": "PAULINO ANTONIO T LOMOLJO",
+  "personnel_rank": "LTC",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "F",
+  "createdAt": {
+    "$date": "2023-06-30T00:21:53.278Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:31:13.491Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e24cfc06acea0af3bd6f7"
+  },
+  "personnel_id": 1007,
+  "serial_no": "O-137484",
+  "fullname": "RODEL A RINGCONADA",
+  "personnel_rank": "LTC",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "G",
+  "createdAt": {
+    "$date": "2023-06-30T00:41:52.003Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:41:52.003Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e25b6c06acea0af3bd6fa"
+  },
+  "personnel_id": 1008,
+  "serial_no": "O-137812",
+  "fullname": "JOEL T ANGELES",
+  "personnel_rank": "LTC",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "H",
+  "createdAt": {
+    "$date": "2023-06-30T00:45:42.199Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:45:42.199Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2691c06acea0af3bd6fd"
+  },
+  "personnel_id": 1009,
+  "serial_no": "O-137057",
+  "fullname": "AL-NASSER R ABDURAKMAN",
+  "personnel_rank": "MAJ",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "I",
+  "createdAt": {
+    "$date": "2023-06-30T00:49:21.693Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:49:21.693Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e26e3c06acea0af3bd700"
+  },
+  "personnel_id": 1010,
+  "serial_no": "O-140174",
+  "fullname": "FELIXBERTO JR A PEÑA",
+  "personnel_rank": "MAJ",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "J",
+  "createdAt": {
+    "$date": "2023-06-30T00:50:43.327Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:50:43.327Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2725c06acea0af3bd708"
+  },
+  "personnel_id": 1011,
+  "serial_no": "O-145631",
+  "fullname": "ARCEL A DEL ROSARIO",
+  "personnel_rank": "MAJ",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "K",
+  "createdAt": {
+    "$date": "2023-06-30T00:51:49.750Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:51:49.750Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e28c2c06acea0af3bd717"
+  },
+  "personnel_id": 1012,
+  "serial_no": "O-144880",
+  "fullname": "ADZMAN D SAHIKAL",
+  "personnel_rank": "CPT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "L",
+  "createdAt": {
+    "$date": "2023-06-30T00:58:42.846Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T00:58:42.846Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2974c06acea0af3bd71a"
+  },
+  "personnel_id": 1013,
+  "serial_no": "O-145699",
+  "fullname": "ABDULMUNID J SAHIPA",
+  "personnel_rank": "CPT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "M",
+  "createdAt": {
+    "$date": "2023-06-30T01:01:40.109Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:01:40.109Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2a0ec06acea0af3bd71d"
+  },
+  "personnel_id": 1014,
+  "serial_no": "O-146666",
+  "fullname": "ALDRINSON C BENSALI",
+  "personnel_rank": "CPT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "N",
+  "createdAt": {
+    "$date": "2023-06-30T01:04:14.812Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:04:14.812Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2aa4c06acea0af3bd720"
+  },
+  "personnel_id": 1015,
+  "serial_no": "O-18185",
+  "fullname": "CREUS I GLENZEN",
+  "personnel_rank": "CPT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "O",
+  "createdAt": {
+    "$date": "2023-06-30T01:06:44.692Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:06:44.692Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2b25c06acea0af3bd723"
+  },
+  "personnel_id": 1016,
+  "serial_no": "O-18627",
+  "fullname": "FLORIANNE MARIE S QUITEVIS",
+  "personnel_rank": "1LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "P",
+  "createdAt": {
+    "$date": "2023-06-30T01:08:53.909Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:08:53.909Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2bafc06acea0af3bd726"
+  },
+  "personnel_id": 1017,
+  "serial_no": "O-146691",
+  "fullname": "RAMIL D AKSAN",
+  "personnel_rank": "1LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "Q",
+  "createdAt": {
+    "$date": "2023-06-30T01:11:11.212Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:11:11.212Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2c43c06acea0af3bd729"
+  },
+  "personnel_id": 1018,
+  "serial_no": "O-142463",
+  "fullname": "RODEO S OICCIO",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "R",
+  "createdAt": {
+    "$date": "2023-06-30T01:13:39.847Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:13:39.847Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2c81c06acea0af3bd72c"
+  },
+  "personnel_id": 1019,
+  "serial_no": "O-153886",
+  "fullname": "KELVIN T MANDIGMA",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "S",
+  "createdAt": {
+    "$date": "2023-06-30T01:14:41.116Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:14:41.116Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2d15c06acea0af3bd72f"
+  },
+  "personnel_id": 1020,
+  "serial_no": "O-144898",
+  "fullname": "RAFFI P SALASAIN",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "T",
+  "createdAt": {
+    "$date": "2023-06-30T01:17:09.205Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:17:32.397Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2d6dc06acea0af3bd733"
+  },
+  "personnel_id": 1021,
+  "serial_no": "O-21216",
+  "fullname": "SHIELA ROSE ANN U BALANGUE",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "U",
+  "createdAt": {
+    "$date": "2023-06-30T01:18:37.277Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:18:37.277Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2deac06acea0af3bd736"
+  },
+  "personnel_id": 1022,
+  "serial_no": "O-154599",
+  "fullname": "RONJAYRO D DE TORRES",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "AA",
+  "createdAt": {
+    "$date": "2023-06-30T01:20:42.539Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:20:42.539Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e2e25c06acea0af3bd739"
+  },
+  "personnel_id": 1023,
+  "serial_no": "O-154604",
+  "fullname": "VANESSA L NIMO",
+  "personnel_rank": "2LT",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "BB",
+  "createdAt": {
+    "$date": "2023-06-30T01:21:41.757Z"
+  },
+  "updatedAt": {
+    "$date": "2023-06-30T01:21:41.757Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ace2e07bdd121b518acd8e"
+  },
+  "personnel_id": 1024,
+  "serial_no": "954177",
+  "fullname": "AW2C Cynthia J Ferrando PAF",
+  "personnel_rank": "AW2C",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "123@gmail.com",
+  "createdAt": {
+    "$date": "2023-07-11T05:04:32.791Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T05:04:32.791Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ace3867bdd121b518acd9a"
+  },
+  "personnel_id": 1025,
+  "serial_no": "967242",
+  "fullname": "AM Mark Andy F Calibuyo PAF",
+  "personnel_rank": "AM",
+  "personnel_brsvc": "PAF",
+  "personnel_email": "1234@gmail.com",
+  "createdAt": {
+    "$date": "2023-07-11T05:07:18.495Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-11T05:07:18.495Z"
+  },
+  "__v": 0
+}]

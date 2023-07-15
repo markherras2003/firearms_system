@@ -1,0 +1,63 @@
+[{
+  "_id": {
+    "$oid": "609306f34dbbfb8ec27e52c1"
+  },
+  "name": "admin",
+  "permissions": [
+    "roles:read",
+    "roles:edit",
+    "roles:delete",
+    "roles:write",
+    "permissions:read",
+    "permissions:edit",
+    "permissions:delete",
+    "permissions:write",
+    "joborders:write",
+    "joborders:delete",
+    "users:delete",
+    "users:edit",
+    "dashboard:read",
+    "users:read",
+    "joborders:read",
+    "joborders:edit",
+    "users:write",
+    "personnels:read",
+    "personnels:write",
+    "personnels:edit",
+    "firearms:read",
+    "firearms:write",
+    "firearms:edit",
+    "personnels:delete",
+    "firearms:delete"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "609307244dbbfb8ec27e52c2"
+  },
+  "name": "editor",
+  "permissions": [
+    "dashboard:read",
+    "personnels:write",
+    "firearms:write",
+    "firearms:edit",
+    "firearms:delete",
+    "firearms:read",
+    "personnels:edit",
+    "personnels:read",
+    "personnels:delete"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "609307384dbbfb8ec27e52c3"
+  },
+  "name": "viewer",
+  "permissions": [
+    "personnels:read",
+    "personnels:delete"
+  ],
+  "__v": 0
+}]

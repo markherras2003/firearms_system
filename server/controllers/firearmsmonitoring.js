@@ -37,6 +37,8 @@ export const getFireArmsMonitoring = async (req, res) => {
       firearms_monitor_id: firearm.firearms_monitor_id,
       personnel_id: firearm.personnel_id,
       firearms_id: firearm.firearms_id,
+      firearms_purpose:firearm.firearms_purpose,
+      firearms_status:firearm.firearms_status,
       firearms_serialno: firearm.firearms_serialno,
       firearms_qrcode: firearm.firearms_qrcode,
       check_in: formattedCheckIn,
@@ -66,6 +68,8 @@ export const saveFireArmMonitoring = async (req, res) => {
       firearms_id,
       firearms_serialno,
       firearms_qrcode,
+      firearms_purpose,
+      firearms_status,
       check_in,
       check_out,
     } = req.body;
@@ -76,6 +80,8 @@ export const saveFireArmMonitoring = async (req, res) => {
       firearms_id,
       firearms_serialno,
       firearms_qrcode,
+      firearms_purpose,
+      firearms_status,
       check_in,
       check_out,
     });

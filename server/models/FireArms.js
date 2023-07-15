@@ -25,6 +25,12 @@ const FireArmsSchema = new mongoose.Schema(
             min: 2,
             max: 50,
         },
+        firearms_buttnumber: {
+            type: String,
+            required: true,
+            min: 2,
+            max: 50,
+        },
         firearms_isperson: {
             type: Boolean,
             required: true,

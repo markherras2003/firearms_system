@@ -29,4 +29,18 @@ export default class FireArmsService {
         return response.data.data;
     }
 
+    async getFirearmsList() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return;
+        }
+        const response = await axios.get(`/firearms_list`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+        return response.data.data;
+    }
+
+
 }

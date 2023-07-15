@@ -24,6 +24,8 @@ const user = ref(null);
 const store = useStore();
 const personneldata = ref([null]);
 const autoFilteredValue = ref([]);
+const firearms_listdata = ref([]);
+const selected_firearms = ref([]);
 
 onBeforeMount(() => {
     initFilters();
@@ -36,6 +38,10 @@ const hasPermission = (permission, currentUserRole, roles) => {
     if (!permissions) return false;
     return permissions.includes(permission);
 };
+
+const testChange = (selected_firearms) => {
+  console.log(selected_firearms.firearms_type);
+}
 
 // usage of permissions:
 const canRead = computed(() => hasPermission('firearms:read', store.state.currentUserRole, store.state.roles));
@@ -62,8 +68,10 @@ onMounted(async () => {
     try {
         const data = await firearmService.getFireArms();
         const personnels = await firearmService.getPersonnels();
+        const firearmslist = await firearmService.getFirearmsList();
         firearms_data.value = data;
         personneldata.value = personnels;
+        firearms_listdata.value = firearmslist;
         const response = await axios.get(`/users/${localStorage.getItem('_id')}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -91,125 +99,134 @@ const print = (printData) => {
 };
 
 const saveFireArm = async () => {
-    submitted.value = true;
-    let { _id, firearms_serialno, firearms_qrcode, firearms, personnel_id, firearms_isperson, firearms_availability, personnel } = firearm.value || {};
-    console.log(firearm.value);
+  submitted.value = true;
+  let { _id, firearms_serialno, firearms_qrcode,firearms_buttnumber, firearms, personnel_id, firearms_isperson, firearms_availability, personnel } = firearm.value || {};
+  console.log(firearms.firearms);
 
-    if (!firearms_serialno || !firearms_qrcode || !firearms) {
-        return null;
-    }
+  if (!firearms_serialno || !firearms_qrcode || !firearms) {
+    return null;
+  }
 
-    if (!firearms_isperson) {
-        personnel_id = undefined;
-    }
+  if (!firearms_isperson) {
+    personnel_id = undefined;
+  }
 
-    if (personnel_id === undefined) {
-        personnel_id = null;
-    } else {
-        personnel_id = personnel_id.personnel_id;
-    }
+  if (personnel_id === undefined) {
+    personnel_id = null;
+  } else {
+    personnel_id = personnel_id.personnel_id;
+  }
 
+  try {
     if (_id) {
-        const response = await axios.put(
-            `/firearms/${_id}`,
-            {
-                _id,
-                firearms_serialno,
-                firearms_qrcode,
-                firearms,
-                firearms_isperson,
-                firearms_availability,
-                personnel_id: personnel_id,
-                personnel
-            },
-            {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            }
-        );
-        let index = firearms_data.value.findIndex((firearm) => firearm._id === _id);
-        if (index > -1) {
-            firearms_data.value[index] = firearm.value;
+      const response = await axios.put(
+        `/firearms/${_id}`,
+        {
+          _id,
+          firearms_serialno,
+          firearms_qrcode,
+          firearms: firearms.firearms,
+          firearms_isperson,
+          firearms_availability,
+          firearms_buttnumber,
+          personnel_id: personnel_id,
+          personnel
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
         }
-        const fullname = getFullName(personnel_id);
-        firearm.value.personnel_id = personnel_id;
-        if (fullname != 'No Personnel') {
-            firearm.value.personnel.fullname = fullname;
-        }
-        firearm.value = response.data;
-        toast.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Personnel Updated',
-            life: 3000
-        });
+      );
+      let index = firearms_data.value.findIndex((firearm) => firearm._id === _id);
+      if (index > -1) {
+        firearms_data.value[index] = firearm.value;
+      }
+      const fullname = getFullName(personnel_id);
+      firearm.value.personnel_id = personnel_id;
+      firearm.value.firearms =  firearms.firearms;
+      if (fullname != 'No Personnel') {
+        firearm.value.personnel.fullname = fullname;
+      }
+      firearm.value = response.data;
+      toast.add({
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Personnel Updated',
+        life: 3000
+      });
     } else {
-        //console.log(firearms_serialno);
-        // firearms_serialno = generateID();
-        console.log(firearms_availability);
-        console.log(firearms_isperson);
-
-        if (firearms_availability === undefined) {
-            firearms_availability = false;
+      if (firearms_availability === undefined) {
+        firearms_availability = false;
+      }
+      if (firearms_isperson === undefined) {
+        firearms_isperson = false;
+      }
+      const response = await axios.post(
+        `/firearms`,
+        {
+          firearms_serialno,
+          firearms_qrcode,
+          firearms: firearms.firearms,
+          firearms_isperson,
+          firearms_availability,
+          firearms_buttnumber,
+          personnel_id: personnel_id,
+          personnel
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
         }
-        if (firearms_isperson === undefined) {
-            firearms_isperson = false;
-        }
-        const response = await axios.post(
-            `/firearms`,
-            {
-                firearms_serialno,
-                firearms_qrcode,
-                firearms,
-                firearms_isperson,
-                firearms_availability,
-                personnel_id: personnel_id,
-                personnel
-            },
-            {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            }
-        );
+      );
 
-        firearm.value.personnel_id = personnel_id;
-        const fullname = getFullName(personnel_id);
-        firearm.value = response.data.data[0];
-        if (firearm.value.personnel_id !== undefined && firearm.value.personnel_id !== null) {
-            firearm.value.personnel.fullname = fullname;
-        }
-        firearms_data.value.push(firearm.value);
+      firearm.value.personnel_id = personnel_id;
+      const fullname = getFullName(personnel_id);
+      firearm.value = response.data.data[0];
+      if (firearm.value.personnel_id !== undefined && firearm.value.personnel_id !== null) {
+        firearm.value.personnel.fullname = fullname;
+      }
+      firearms_data.value.push(firearm.value);
 
-        toast.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Fire Arms Created',
-            life: 3000
-        });
+      toast.add({
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Fire Arms Created',
+        life: 3000
+      });
     }
 
     firearmDialog.value = false;
     // Clear firearm.value
     firearm.value = {};
+    } catch (error) {
+            if (error.response && error.response.status === 500 && error.response.data.error.includes('duplicate')) {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'Firearm with the same serial number already exists', life: 3000 });
+            } else {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to create firearm', life: 3000 });
+            }
+        }
 };
 
 const editFireArms = (editFireArms) => {
     firearm.value = { ...editFireArms };
 
-    const { _id, firearms_serialno, firearms_qrcode, personnel_id, firearms_isperson, firearms, firearms_availability, personnel } = editFireArms;
+    const { _id, firearms_serialno, firearms_buttnumber,firearms_qrcode, personnel_id, firearms_isperson, firearms, firearms_availability, personnel } = editFireArms;
 
+    console.log(editFireArms);  
     firearm.value = {
         _id,
         firearms_serialno,
         firearms_qrcode,
-        firearms,
+        firearms_buttnumber,
+        firearms : { firearms: firearms},
         personnel_id,
         firearms_isperson,
         firearms_availability,
         personnel
     };
+
     firearmDialog.value = true;
 };
 
@@ -324,7 +341,7 @@ const searchPersonnel = (event) => {
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['firearms']"
+                        :globalFilterFields="['firearms','personnel.fullname','firearms_serialno']"
                     >
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -383,13 +400,26 @@ const searchPersonnel = (event) => {
                         </div>
 
                         <div class="field">
+                            <label for="firearm.firearms">Firearms Type</label>
+                            <Dropdown v-model="firearm.firearms" :options="firearms_listdata" optionLabel="firearms" placeholder="Select Firearms Type" :class="{ 'p-invalid': submitted && !firearm.firearms }"/>
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms">Firearms is required.</small>
+                        </div>
+
+                      <!-- <div class="field">
                             <label for="firearms">FireArms</label>
-                            <InputText id="firearms" v-model.trim="firearm.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms }" />
-                            <small class="p-invalid" v-if="submitted && !firearm.firearms">Email is required.</small>
+                            <InputText id="firearms_value" v-model="firearm.firearms" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms }" />
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms">Firearms is required.</small>
+                        </div>
+                        -->
+
+                        <div class="field">
+                            <label for="firearms_buttnumber">Firearms Butt Number</label>
+                            <InputText v-model="firearm.firearms_buttnumber" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms_buttnumber }" />
+                            <small class="p-invalid" v-if="submitted && !firearm.firearms_buttnumber">firearms_buttnumber is required.</small>
                         </div>
 
                         <div class="field">
-                            <label for="firearms_qrcode">FireArms QR Code</label>
+                            <label for="firearms_qrcode">Firearms QR Code</label>
                             <InputText id="firearms_qrcode" v-model.trim="firearm.firearms_qrcode" required="true" rows="3" cols="20" :class="{ 'p-invalid': submitted && !firearm.firearms_qrcode }" />
                             <small class="p-invalid" v-if="submitted && !firearm.firearms_qrcode">Fire Arms QR Code is Required.</small>
                         </div>
