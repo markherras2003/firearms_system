@@ -231,12 +231,10 @@ const logFirearms = async (data) => {
                 set_val = false;
             } else {
                 set_val = true;
-                console.log('Move to logs');
                 const firearms_datas_log = await firearmService.getFireArmsID(data);
                 check_firearm_data.value = firearms_datas_log;
                 let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
-                console.log(firearms_datas_log);
-
+        
                 if (personnel_id === null) {
                     personnel_id = firearms_monitor.personnel_id;
                 }
@@ -259,8 +257,6 @@ const logFirearms = async (data) => {
                         }
                     }
                 );
-
-                console.log(_id);
 
                 setTimeout(() => {
                     const response_delete = axios.delete(`/firearmsmonitoring/${firearms_monitor._id}`, {
@@ -341,13 +337,16 @@ const logFirearms = async (data) => {
                 life: 3000
             });
 
-            console.log('Move to logs');
-
             const firearms_datas_logs = await firearmService.getFireArmsID(data);
             check_firearm_data_log.value = firearms_datas_logs;
             let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
-            console.log(firearms_datas_logs);
-
+            console.log('Move to logs 2');
+            if (my_status.value === '') {
+                my_status.value = "N/A";
+            }
+            if (my_purpose.value === '') {
+                my_purpose.value = "N/A";
+            }
             if (personnel_id === null) {
                 personnel_id = firearms_monitor.personnel_id;
             }
@@ -543,10 +542,12 @@ const searchPersonnel = (event) => {
                                 {{ slotProps.data.firearms_serialno }}
                             </template>
                         </Column>
-                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-                            <span class="p-column-title">Fire Arms.</span>
-                            <template v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
-                                {{ slotProps.data.fire_arms.firearms }}
+                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:22%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Fire Arms.</span>
+                                <template v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
+                                    {{ slotProps.data.fire_arms.firearms }}
+                                </template>
                             </template>
                         </Column>
                         <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:20%; min-width:10rem;">

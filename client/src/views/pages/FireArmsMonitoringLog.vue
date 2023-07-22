@@ -483,6 +483,18 @@ const searchPersonnel = (event) => {
                                 {{ slotProps.data.personnel.fullname }}
                             </template>
                         </Column>
+                        <Column field="firearms_status" header="Firearms Status" :sortable="true" headerStyle="width:22%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Firearms Status</span>
+                                {{ slotProps.data.firearms_status }}
+                            </template>
+                        </Column>
+                        <Column field="firearms_purpose" header="Firearms Purpose" :sortable="true" headerStyle="width:22%; min-width:10rem;">
+                            <template #body="slotProps">
+                                <span class="p-column-title">Firearms Purpose</span>
+                                {{ slotProps.data.firearms_purpose }}
+                            </template>
+                        </Column>
                         <Column field="check_in" header="Check In" :sortable="true" headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Check In</span>

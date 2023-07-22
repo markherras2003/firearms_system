@@ -39,6 +39,8 @@ export const getFireArmsMonitoring = async (req, res) => {
       firearms_id: firearm.firearms_id,
       firearms_serialno: firearm.firearms_serialno,
       firearms_qrcode: firearm.firearms_qrcode,
+      firearms_status: firearm.firearms_status,
+      firearms_purpose: firearm.firearms_purpose,
       check_in: formattedCheckIn,
       check_out: formattedCheckOut,
       personnel,
@@ -59,12 +61,14 @@ export const saveFireArmMonitoring = async (req, res) => {
   try {
     const lastNumber = await FireArmsMonitorLog.findOne().sort({ firearms_monitor_log_id: -1 });
     const nextNumberID = lastNumber ? lastNumber.firearms_monitor_log_id + 1 : 1001;
-
+    
     const {
       firearms_monitor_log_id,
       personnel_id,
       firearms_id,
       firearms_serialno,
+      firearms_status,
+      firearms_purpose,
       firearms_qrcode,
       check_in,
       check_out,
@@ -75,6 +79,8 @@ export const saveFireArmMonitoring = async (req, res) => {
       personnel_id,
       firearms_id,
       firearms_serialno,
+      firearms_status,
+      firearms_purpose,
       firearms_qrcode,
       check_in,
       check_out,
