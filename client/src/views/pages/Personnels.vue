@@ -389,7 +389,7 @@ const initFilters = () => {
                         <div class="field">
                             <label for="personnel_email">Email</label>
                             <InputText id="personnel_email" v-model.trim="personnel.personnel_email" required="false"
-                                rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.personnel_email }" />
+                                rows="3" cols="20" />
                         </div>
 
                         <div class="field">
