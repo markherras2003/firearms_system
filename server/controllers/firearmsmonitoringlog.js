@@ -23,7 +23,7 @@ export const getFireArmsMonitoring = async (req, res) => {
     */
 
      // Iterate over each item in the firearms array
-  const data = await Promise.all(firearms.map(async (firearm) => {
+  const data = await Promise.all(firearms.map(async (firearm,index) => {
     const personnel = await Personnel.findOne({"personnel_id": firearm.personnel_id});
     const fire_arms = await FireArms.findOne({"firearms_id": firearm.firearms_id})
 
@@ -32,6 +32,7 @@ export const getFireArmsMonitoring = async (req, res) => {
     const formattedCheckIn = checkInDate ? checkInDate.toLocaleString() : "";
     const formattedCheckOut = checkOutDate ? checkOutDate.toLocaleString() : "";
     return {
+      series_count: index + 1, // Series count starts from 1
       _id: firearm._id,
       firearms_id: firearm.firearms_id,
       firearms_monitor_log_id: firearm.firearms_monitor_log_id,

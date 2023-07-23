@@ -84,16 +84,16 @@ const print = (printData) => {
 const savePersonnel = async () => {
     console.log(personnels.value);
     submitted.value = true;
-    let {   
-      _id,
-      personnel_id,
-      serial_no,
-      fullname,
-      personnel_contact,
-      personnel_rank: { personnel_rank: personnel_rank } = {},
-      personnel_brsvc: { personnel_brsvc: personnel_brsvc } = {},
-      personnel_office: { personnel_office: personnel_office } = {},
-      personnel_email } = personnel.value || {};
+    let {
+        _id,
+        personnel_id,
+        serial_no,
+        fullname,
+        personnel_contact,
+        personnel_rank: { personnel_rank: personnel_rank } = {},
+        personnel_brsvc: { personnel_brsvc: personnel_brsvc } = {},
+        personnel_office: { personnel_office: personnel_office } = {},
+        personnel_email } = personnel.value || {};
 
     if (!fullname || !serial_no) {
         return null;
@@ -166,25 +166,25 @@ const savePersonnel = async () => {
 
 const editPersonnel = (editPersonnel) => {
     personnel.value = { ...editPersonnel };
-    const {     
-      _id,
-      personnel_id,
-      fullname,
-      serial_no,
-      personnel_rank,
-      personnel_brsvc ,
-      personnel_office,
-      personnel_contact,
-      personnel_email } = editPersonnel;
-      personnel.value = {
+    const {
+        _id,
+        personnel_id,
+        fullname,
+        serial_no,
+        personnel_rank,
+        personnel_brsvc,
+        personnel_office,
+        personnel_contact,
+        personnel_email } = editPersonnel;
+    personnel.value = {
         _id,
         fullname,
         personnel_id,
         serial_no,
         personnel_contact,
-        personnel_rank: { personnel_rank : personnel_rank},
-        personnel_brsvc : {personnel_brsvc : personnel_brsvc},
-        personnel_office : {personnel_office : personnel_office},
+        personnel_rank: { personnel_rank: personnel_rank },
+        personnel_brsvc: { personnel_brsvc: personnel_brsvc },
+        personnel_office: { personnel_office: personnel_office },
         personnel_email,
     };
     console.log(personnel.value);
@@ -268,8 +268,11 @@ const initFilters = () => {
                     <Toolbar class="mb-4">
                         <template v-slot:start>
                             <div class="my-2">
-                                <Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedPersonnels || !selectedPersonnels.length" />
+                                <Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                                    @click="openNew" />
+                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger"
+                                    @click="confirmDeleteSelected"
+                                    :disabled="!selectedPersonnels || !selectedPersonnels.length" />
                             </div>
                         </template>
 
@@ -278,22 +281,12 @@ const initFilters = () => {
                         </template>
                     </Toolbar>
 
-                    <DataTable
-                        ref="dt"
-                        :value="personnels"
-                        v-model:selection="selectedPersonnels"
-                        dataKey="_id"
-                        :paginator="true"
-                        :rows="10"
-                        :filters="filters"
-                        v-model:filters="filters"
-                        filterDisplay="menu"
+                    <DataTable ref="dt" :value="personnels" v-model:selection="selectedPersonnels" dataKey="_id"
+                        :paginator="true" :rows="10" :filters="filters" v-model:filters="filters" filterDisplay="menu"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Personnels"
-                        responsiveLayout="scroll"
-                        :globalFilterFields="['fullname','serial_no', 'personnel_id']"
-                    >
+                        responsiveLayout="scroll" :globalFilterFields="['fullname', 'serial_no', 'personnel_id']">
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                                 <h5 class="m-0">Manage Personnels</h5>
@@ -305,69 +298,92 @@ const initFilters = () => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="serial_no" header="AFP Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+
+                        <!-- Series Count Column -->
+                        <Column field="series_count" header="#">
+                            <template #body="slotProps">
+                                <span class="p-column-title">#</span>
+                                {{ slotProps.data.series_count }}
+                            </template>
+                        </Column>
+
+                        <Column field="serial_no" header="AFP Serial No." :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">AFP Serial No.</span>
                                 {{ slotProps.data.serial_no }}
                             </template>
                             <template #filter="{ filterModel }">
-                                <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by Serial No." />
+                                <InputText type="text" v-model="filterModel.value" class="p-column-filter"
+                                    placeholder="Search by Serial No." />
                             </template>
                         </Column>
-                        <Column field="fullname" header="Full Name" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="fullname" header="Full Name" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Full Name</span>
                                 {{ slotProps.data.fullname }}
                             </template>
                             <template #filter="{ filterModel }">
-                                <InputText type="text" v-model="filterModel.value" class="p-column-filter" placeholder="Search by fullname" />
+                                <InputText type="text" v-model="filterModel.value" class="p-column-filter"
+                                    placeholder="Search by fullname" />
                             </template>
                         </Column>
-                        <Column field="personnel_email" header="Email" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="personnel_email" header="Email" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Email</span>
                                 {{ slotProps.data.personnel_email }}
                             </template>
                         </Column>
 
-                        <Column field="personnel_contact" header="Contact" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="personnel_contact" header="Contact" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Contact</span>
                                 {{ slotProps.data.personnel_contact }}
                             </template>
                         </Column>
-                    
 
-                        <Column field="personnel_office" header="Office" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+
+                        <Column field="personnel_office" header="Office" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Office</span>
                                 {{ slotProps.data.personnel_office }}
                             </template>
                         </Column>
-                    
+
                         <Column headerStyle="min-width:10rem;">
                             <template #body="slotProps">
-                                <Button icon="pi pi-pencil" v-if="canEdit" class="p-button-rounded p-button-success mr-2" @click="editPersonnel(slotProps.data)" />
+                                <Button icon="pi pi-pencil" v-if="canEdit" class="p-button-rounded p-button-success mr-2"
+                                    @click="editPersonnel(slotProps.data)" />
                                 <!--<Button icon="pi pi-print" v-if="canRead" class="p-button-rounded p-button-primary mt-2" @click="print(slotProps.data)" />-->
-                                <Button icon="pi pi-trash" v-if="canDelete" class="p-button-rounded p-button-warning ml-2" @click="confirmDeletePersonnel(slotProps.data)" />
+                                <Button icon="pi pi-trash" v-if="canDelete" class="p-button-rounded p-button-warning ml-2"
+                                    @click="confirmDeletePersonnel(slotProps.data)" />
                             </template>
                         </Column>
                     </DataTable>
 
-                    <Dialog v-model:visible="personnelDialog" :style="{ width: '600px' }" header="Personnel Details" :modal="true" class="p-fluid">
+                    <Dialog v-model:visible="personnelDialog" :style="{ width: '600px' }" header="Personnel Details"
+                        :modal="true" class="p-fluid">
                         <div class="field">
                             <label for="name">AFP Serial No.</label>
-                            <InputText id="serial_no" v-model.trim="personnel.serial_no" required="true" autofocus :class="{ 'p-invalid': submitted && !personnel.serial_no }" />
-                            <small class="p-invalid" v-if="submitted && !personnel.serial_no">Serial No. is required.</small>
+                            <InputText id="serial_no" v-model.trim="personnel.serial_no" required="true" autofocus
+                                :class="{ 'p-invalid': submitted && !personnel.serial_no }" />
+                            <small class="p-invalid" v-if="submitted && !personnel.serial_no">Serial No. is
+                                required.</small>
                         </div>
                         <div class="field">
                             <label for="name">Fullname (RANK/NAME/BOS)</label>
-                            <InputText id="fullname" v-model.trim="personnel.fullname" required="true" autofocus :class="{ 'p-invalid': submitted && !personnel.fullname }" />
+                            <InputText id="fullname" v-model.trim="personnel.fullname" required="true" autofocus
+                                :class="{ 'p-invalid': submitted && !personnel.fullname }" />
                             <small class="p-invalid" v-if="submitted && !personnel.fullname">Full Name is required.</small>
                         </div>
                         <div class="field">
                             <label for="personnel_email">Email</label>
-                            <InputText id="personnel_email" v-model.trim="personnel.personnel_email" required="false" rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.personnel_email }" />
+                            <InputText id="personnel_email" v-model.trim="personnel.personnel_email" required="false"
+                                rows="3" cols="20" :class="{ 'p-invalid': submitted && !personnel.personnel_email }" />
                         </div>
 
                         <div class="field">
@@ -377,7 +393,8 @@ const initFilters = () => {
 
                         <div class="field">
                             <label for="personnel_brsvc">Office</label>
-                            <Dropdown v-model="personnel.personnel_office" :options="personnelofficedata" optionLabel="personnel_office" placeholder="Select Office" />
+                            <Dropdown v-model="personnel.personnel_office" :options="personnelofficedata"
+                                optionLabel="personnel_office" placeholder="Select Office" />
                         </div>
 
                         <template #footer>
@@ -386,27 +403,28 @@ const initFilters = () => {
                         </template>
                     </Dialog>
 
-                    <Dialog v-model:visible="deletepersonnelDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                    <Dialog v-model:visible="deletepersonnelDialog" :style="{ width: '450px' }" header="Confirm"
+                        :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                            <span v-if="personnel"
-                                >Are you sure you want to delete <b>{{ personnel.fullname }}</b
-                                >?</span
-                            >
+                            <span v-if="personnel">Are you sure you want to delete <b>{{ personnel.fullname }}</b>?</span>
                         </div>
                         <template #footer>
-                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deletepersonnelDialog = false" />
+                            <Button label="No" icon="pi pi-times" class="p-button-text"
+                                @click="deletepersonnelDialog = false" />
                             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deletePersonnel" />
                         </template>
                     </Dialog>
 
-                    <Dialog v-model:visible="deletepersonnelssDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                    <Dialog v-model:visible="deletepersonnelssDialog" :style="{ width: '450px' }" header="Confirm"
+                        :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
                             <span v-if="personnel">Are you sure you want to delete the selected personnels?</span>
                         </div>
                         <template #footer>
-                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deletepersonnelssDialog = false" />
+                            <Button label="No" icon="pi pi-times" class="p-button-text"
+                                @click="deletepersonnelssDialog = false" />
                             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelectedPersonnel" />
                         </template>
                     </Dialog>

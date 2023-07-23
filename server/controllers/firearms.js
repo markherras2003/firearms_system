@@ -27,15 +27,15 @@ export const getFireArmID = async (req, res) => {
         "firearms_serialno": firearm.firearms_serialno,
       });
       return {
-        _id : firearm._id,
+        _id: firearm._id,
         firearms: firearm.firearms,
         firearms_id: firearm.firearms_id,
         personnel_id: firearm.personnel_id,
         firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_serialno: firearm.firearms_serialno,
-        firearms_qrcode: firearm. firearms_qrcode,
+        firearms_qrcode: firearm.firearms_qrcode,
         firearms_status: firearm.firearms_status,
-        firearms_purpose:firearm.firearms_purpose,
+        firearms_purpose: firearm.firearms_purpose,
         firearms_isperson: firearm.firearms_isperson,
         firearms_availability: firearm.firearms_availability,
         firearms_monitor,
@@ -43,7 +43,7 @@ export const getFireArmID = async (req, res) => {
       };
     }));
 
-    res.status(200).json({ data});
+    res.status(200).json({ data });
 
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -62,15 +62,15 @@ export const getFireArmIDLog = async (req, res) => {
         "firearms_serialno": firearm.firearms_serialno,
       });
       return {
-        _id : firearm._id,
+        _id: firearm._id,
         firearms: firearm.firearms,
         firearms_buttnumber: firearm.firearms_buttnumber,
         firearms_id: firearm.firearms_id,
         personnel_id: firearm.personnel_id,
         firearms_serialno: firearm.firearms_serialno,
-        firearms_qrcode: firearm. firearms_qrcode,
+        firearms_qrcode: firearm.firearms_qrcode,
         firearms_status: firearm.firearms_status,
-        firearms_purpose:firearm.firearms_purpose,
+        firearms_purpose: firearm.firearms_purpose,
         firearms_isperson: firearm.firearms_isperson,
         firearms_availability: firearm.firearms_availability,
         firearms_monitor,
@@ -78,7 +78,7 @@ export const getFireArmIDLog = async (req, res) => {
       };
     }));
 
-    res.status(200).json({ data});
+    res.status(200).json({ data });
 
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -117,10 +117,11 @@ export const getFireArms = async (req, res) => {
 */
     const firearms = await FireArms.find();
     // Iterate over each item in the firearms array
-    const data = await Promise.all(firearms.map(async (firearm) => {
+    const data = await Promise.all(firearms.map(async (firearm, index) => {
       const personnel = await Personnel.findOne({ "personnel_id": firearm.personnel_id });
 
       return {
+        series_count: index + 1, // Series count starts from 1
         _id: firearm._id,
         firearms: firearm.firearms,
         personnel_id: firearm.personnel_id,
@@ -135,7 +136,7 @@ export const getFireArms = async (req, res) => {
     }));
 
     res.status(200).json({ data });
-    
+
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

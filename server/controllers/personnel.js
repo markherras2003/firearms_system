@@ -15,29 +15,35 @@ export const getPersonnel = async (req, res) => {
 export const getPersonnels = async (req, res) => {
   try {
     const personnels = await Personnel.find();
-    const data = personnels.map(({
-      _id,
-      personnel_id,
-      serial_no,
-      fullname,
-      personnel_rank,
-      personnel_brsvc,
-      personnel_office,
-      personnel_contact,
-      personnel_email,
-      createdAt
-    }) => ({
-      _id,
-      personnel_id,
-      serial_no,
-      fullname,
-      personnel_rank,
-      personnel_brsvc,
-      personnel_office,
-      personnel_contact,
-      personnel_email,
-      createdAt: createdAt.toISOString().split('T')[0]
-    }));
+    const data = personnels.map(
+      (
+        {
+          _id,
+          personnel_id,
+          serial_no,
+          fullname,
+          personnel_rank,
+          personnel_brsvc,
+          personnel_office,
+          personnel_contact,
+          personnel_email,
+          createdAt,
+        },
+        index // Add the index parameter to access the current index
+      ) => ({
+        series_count: index + 1, // Series count starts from 1
+        _id,
+        personnel_id,
+        serial_no,
+        fullname,
+        personnel_rank,
+        personnel_brsvc,
+        personnel_office,
+        personnel_contact,
+        personnel_email,
+        createdAt: createdAt.toISOString().split('T')[0],
+      })
+    );
     res.status(200).json({ data });
   } catch (err) {
     res.status(404).json({ message: err.message });

@@ -532,6 +532,13 @@ const searchPersonnel = (event) => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+                        <!-- Series Count Column -->
+                        <Column field="series_count" header="#">
+                            <template #body="slotProps">
+                                <span class="p-column-title">#</span>
+                                {{ slotProps.data.series_count }}
+                            </template>
+                        </Column>
                         <Column field="firearms_monitor_id" header="Fire Arms Monitor ID." :sortable="true"
                             headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
@@ -704,8 +711,10 @@ const searchPersonnel = (event) => {
         </div>
     </div>
 </template>
-<style scoped lang="scss">@import '@/assets/demo/styles/badges.scss';
+<style scoped lang="scss">
+@import '@/assets/demo/styles/badges.scss';
 
 .p-dialog .p-dialog-header-icon {
     display: none !important;
-}</style>
+}
+</style>
