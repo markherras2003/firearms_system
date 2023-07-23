@@ -115,10 +115,14 @@ const hideDialog = () => {
 const checkFirearms = async (data) => {
     const firearms_datas = await firearmService.getFireArmsID(data);
     check_firearm_data.value = firearms_datas;
-    let { _id, firearms_serialno, firearms, firearms_buttnumber,firearms_availability, personnel, firearms_monitor,firearms_purpose,firearms_status, firearms_isperson, personnel_id } = check_firearm_data.value[0] || {};
+    let { _id, firearms_serialno, firearms, firearms_buttnumber, firearms_availability, personnel, firearms_monitor, firearms_purpose, firearms_status, firearms_isperson, personnel_id } = check_firearm_data.value[0] || {};
+    console.log(check_firearm_data.value[0]);
     temp_id.value = data;
     my_checkin.value = null;
     my_checkout.value = null;
+    my_purpose.value = firearms_monitor !== null ? firearms_monitor.firearms_purpose : "N/A";
+    my_status.value = firearms_monitor !== null ? firearms_monitor.firearms_status : "N/A";
+
     personnel_fullname.value = null;
 
     if (!firearms_serialno) {
@@ -134,7 +138,7 @@ const checkFirearms = async (data) => {
         my_firearm_isperson.value = true;
         isFirearms.value = true;
         my_firearm.value = firearms;
-        
+
         my_butt.value = firearms_buttnumber;
         my_availability.value = firearms_availability;
         if (firearms_availability) {
@@ -175,7 +179,7 @@ const checkFirearms = async (data) => {
 const logFirearms = async (data) => {
     const firearms_datas = await firearmService.getFireArmsID(data);
     check_firearm_data.value = firearms_datas;
-    let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
+    let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_purpose, firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
     temp_id.value = _id;
 
     console.log(firearms_datas);
@@ -233,8 +237,8 @@ const logFirearms = async (data) => {
                 set_val = true;
                 const firearms_datas_log = await firearmService.getFireArmsID(data);
                 check_firearm_data.value = firearms_datas_log;
-                let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
-        
+                let { _id, firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_purpose, firearms_status, firearms_monitor, personnel_id } = check_firearm_data.value[0] || {};
+
                 if (personnel_id === null) {
                     personnel_id = firearms_monitor.personnel_id;
                 }
@@ -339,8 +343,11 @@ const logFirearms = async (data) => {
 
             const firearms_datas_logs = await firearmService.getFireArmsID(data);
             check_firearm_data_log.value = firearms_datas_logs;
-            let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel,firearms_purpose,firearms_status, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
+            let { firearms_serialno, firearms_id, firearms_qrcode, firearms, firearms_availability, personnel, firearms_purpose, firearms_status, firearms_monitor, personnel_id } = check_firearm_data_log.value[0] || {};
+
             console.log('Move to logs 2');
+            console.log(check_firearm_data_log.value);
+
             if (my_status.value === '') {
                 my_status.value = "N/A";
             }
@@ -356,7 +363,7 @@ const logFirearms = async (data) => {
                 {
                     firearms_serialno,
                     firearms_qrcode,
-                    firearms_id,    
+                    firearms_id,
                     firearms_status: my_status.value,
                     firearms_purpose: my_purpose.value,
                     personnel_id,
@@ -402,7 +409,7 @@ const logFirearms = async (data) => {
             checkFirearms(firearms_serialno);
         }, 500);
     }
-    
+
 };
 
 const confirmDelete = (editFireArms) => {
@@ -493,8 +500,12 @@ const searchPersonnel = (event) => {
                         <template v-slot:start>
                             <div class="my-2">
                                 <!--<Button v-if="canWrite" label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />-->
-                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedFireArms || !selectedFireArms.length" />
-                                <InputText id="firearms_serialno" placeholder="Firearms Serial No." v-model.trim="firearm.firearms_serialno" class="ml-2" @keyup.enter="handleEnterKey(firearm.firearms_serialno)" />
+                                <Button v-if="canDelete" label="Delete" icon="pi pi-trash" class="p-button-danger"
+                                    @click="confirmDeleteSelected"
+                                    :disabled="!selectedFireArms || !selectedFireArms.length" />
+                                <InputText id="firearms_serialno" placeholder="Firearms Serial No."
+                                    v-model.trim="firearm.firearms_serialno" class="ml-2"
+                                    @keyup.enter="handleEnterKey(firearm.firearms_serialno)" />
                             </div>
                         </template>
 
@@ -503,22 +514,13 @@ const searchPersonnel = (event) => {
                         </template>
                     </Toolbar>
 
-                    <DataTable
-                        ref="dt"
-                        :value="firearms_data"
-                        v-model:selection="selectedFireArms"
-                        dataKey="_id"
-                        :paginator="true"
-                        :rows="10"
-                        :filters="filters"
-                        v-model:filters="filters"
-                        filterDisplay="menu"
+                    <DataTable ref="dt" :value="firearms_data" v-model:selection="selectedFireArms" dataKey="_id"
+                        :paginator="true" :rows="10" :filters="filters" v-model:filters="filters" filterDisplay="menu"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         :rowsPerPageOptions="[5, 10, 25]"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Fire Arms Monitoring"
                         responsiveLayout="scroll"
-                        :globalFilterFields="['firearms_serialno', 'fire_arms.firearms', 'personnel.fullname']"
-                    >
+                        :globalFilterFields="['firearms_serialno', 'fire_arms.firearms', 'personnel.fullname']">
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                                 <h5 class="m-0">Manage Fire Arms Monitoring</h5>
@@ -530,39 +532,46 @@ const searchPersonnel = (event) => {
                         </template>
 
                         <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="firearms_monitor_id" header="Fire Arms Monitor ID." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_monitor_id" header="Fire Arms Monitor ID." :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms Monitor ID.</span>
                                 {{ slotProps.data.firearms_monitor_id }}
                             </template>
                         </Column>
-                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="firearms_serialno" header="Fire Arms Serial No." :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
                                 {{ slotProps.data.firearms_serialno }}
                             </template>
                         </Column>
-                        <Column field="firearms" header="Fire Arms" :sortable="true" headerStyle="width:22%; min-width:10rem;">
+                        <Column field="firearms" header="Fire Arms" :sortable="true"
+                            headerStyle="width:22%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Fire Arms.</span>
-                                <template v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
+                                <template
+                                    v-if="slotProps.data.fire_arms !== null && slotProps.data.fire_arms.firearms !== undefined && slotProps.data.fire_arms.firearms !== null">
                                     {{ slotProps.data.fire_arms.firearms }}
                                 </template>
                             </template>
                         </Column>
-                        <Column field="personnel_id" header="Personnel" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="personnel_id" header="Personnel" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Personnel</span>
                                 {{ slotProps.data.personnel.fullname }}
                             </template>
                         </Column>
-                        <Column field="check_in" header="Check In" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="check_in" header="Check In" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Check In</span>
                                 {{ slotProps.data.check_in }}
                             </template>
                         </Column>
-                        <Column field="check_out" header="Check Out" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <Column field="check_out" header="Check Out" :sortable="true"
+                            headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Check Out</span>
                                 {{ slotProps.data.check_out }}
@@ -572,27 +581,34 @@ const searchPersonnel = (event) => {
                         <Column headerStyle="min-width:10rem;">
                             <template #body="slotProps">
                                 <!--<Button icon="pi pi-print" v-if="canRead" class="p-button-rounded p-button-primary mt-2" @click="print(slotProps.data)" />-->
-                                <Button icon="pi pi-trash" v-if="canDelete" class="p-button-rounded p-button-warning ml-2" @click="confirmDelete(slotProps.data)" />
+                                <Button icon="pi pi-trash" v-if="canDelete" class="p-button-rounded p-button-warning ml-2"
+                                    @click="confirmDelete(slotProps.data)" />
                             </template>
                         </Column>
                     </DataTable>
 
-                    <Dialog v-model:visible="firearmDialog" :style="{ width: '800px' }" header="Firearms Details" :modal="true" class="p-fluid" :closable="false">
+                    <Dialog v-model:visible="firearmDialog" :style="{ width: '800px' }" header="Firearms Details"
+                        :modal="true" class="p-fluid" :closable="false">
                         <div class="formgrid grid">
                             <div class="field col">
                                 <label for="name"></label>
-                                <InputText id="firearms_serialno" placeholder="Firearms Serial No." v-model.trim="firearm.firearms_serialno" required="true" autofocus :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
-                                <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is required.</small>
+                                <InputText id="firearms_serialno" placeholder="Firearms Serial No."
+                                    v-model.trim="firearm.firearms_serialno" required="true" autofocus
+                                    :class="{ 'p-invalid': submitted && !firearm.firearms_serialno }" />
+                                <small class="p-invalid" v-if="submitted && !firearm.firearms_serialno">Full Name is
+                                    required.</small>
                             </div>
 
                             <div class="field col">
-                                <button @click="checkFirearms(firearm.firearms_serialno)" class="p-button p-component" type="button" aria-label="Submit">
+                                <button @click="checkFirearms(firearm.firearms_serialno)" class="p-button p-component"
+                                    type="button" aria-label="Submit">
                                     <span class="p-button-label">Check Firearms</span>
                                     <span class="p-ink" role="presentation" aria-hidden="true"></span>
                                 </button>
                             </div>
                             <div class="field col" v-if="isFirearms">
-                                <button :disabled="!isFirearms" @click="logFirearms(firearm.firearms_serialno)" class="p-button p-component" type="button" aria-label="Submit">
+                                <button :disabled="!isFirearms" @click="logFirearms(firearm.firearms_serialno)"
+                                    class="p-button p-component" type="button" aria-label="Submit">
                                     <span class="p-button-label">{{ checkstatus }}</span>
                                     <span class="p-ink" role="presentation" aria-hidden="true"></span>
                                 </button>
@@ -600,44 +616,42 @@ const searchPersonnel = (event) => {
                         </div>
 
                         <div v-if="isFirearms" class="field">
-                            <span class="block text-600 font-medium mb-3"><strong>Firearms : {{ my_firearm }}</strong></span>
-                            <span class="block text-600 font-medium mb-3"><strong>Butt Number : {{ my_butt }}</strong></span>
+                            <span class="block text-600 font-medium mb-3"><strong>Firearms : {{ my_firearm
+                            }}</strong></span>
+                            <span class="block text-600 font-medium mb-3"><strong>Butt Number : {{ my_butt
+                            }}</strong></span>
                             <span>
                                 Availability :
-                                <Tag class="mr-4" :severity="my_availability ? 'success' : 'danger'"> {{ my_availability ? 'Yes' : 'Not Available' }}</Tag>
+                                <Tag class="mr-4" :severity="my_availability ? 'success' : 'danger'"> {{ my_availability ?
+                                    'Yes' : 'Not Available' }}</Tag>
                             </span>
-                           
+
                             <div class="field" v-if="my_availability">
-                            <label for="my_purpose">Firearms Purpose</label>
-                            <InputText v-model="my_purpose" required="true" rows="3" cols="20" />
+                                <label for="my_purpose">Firearms Purpose</label>
+                                <InputText v-model="my_purpose" required="true" rows="3" cols="20" />
                             </div>
 
                             <div class="field" v-if="!my_availability">
-                            <label for="my_status">Firearms Status</label>
-                            <InputText v-model="my_status" required="true" rows="3" cols="20" />
+                                <label for="my_status">Firearms Status</label>
+                                <InputText v-model="my_status" required="true" rows="3" cols="20" />
                             </div>
 
                             <div class="mt-3">
-                                <Chip :label="personnel_fullname" :image="'demo/images/avatar/default.jpg'" class="mr-2 mb-2"></Chip>
+                                <Chip :label="personnel_fullname" :image="'demo/images/avatar/default.jpg'"
+                                    class="mr-2 mb-2"></Chip>
                             </div>
                             <div class="field" v-if="!my_firearm_isperson">
                                 <!--<Dropdown v-model.trim="firearm.personnel_id" :options="personneldata" optionLabel="personnel_id" placeholder="Select Personnel" />-->
-                                <AutoComplete
-                                    placeholder="Search Personnel"
-                                    id="dd"
-                                    :dropdown="true"
-                                    :multiple="false"
-                                    v-model="select_personnel_id"
-                                    :options="personneldata"
-                                    :suggestions="autoFilteredValue"
-                                    @complete="searchPersonnel($event)"
-                                    :field="fullnameField"
-                                />
-                                <strong v-if="firearm.personnel_id">Personnel: {{ getFullName(firearm.personnel_id) }}</strong>
+                                <AutoComplete placeholder="Search Personnel" id="dd" :dropdown="true" :multiple="false"
+                                    v-model="select_personnel_id" :options="personneldata" :suggestions="autoFilteredValue"
+                                    @complete="searchPersonnel($event)" :field="fullnameField" />
+                                <strong v-if="firearm.personnel_id">Personnel: {{ getFullName(firearm.personnel_id)
+                                }}</strong>
                             </div>
                             <ul class="p-0 mx-0 mt-0 mb-4 list-none">
                                 <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                                    <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
+                                    <div
+                                        class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
                                         <i class="pi pi-clock text-xl text-green-500"></i>
                                     </div>
                                     <span class="text-900 line-height-3">
@@ -645,12 +659,12 @@ const searchPersonnel = (event) => {
                                     </span>
                                 </li>
                                 <li class="flex align-items-center py-2">
-                                    <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
+                                    <div
+                                        class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
                                         <i class="pi pi-clock text-xl text-blue-500"></i>
                                     </div>
-                                    <span class="text-700 line-height-3"
-                                        ><span class="text-700"> Check Out : {{ my_checkout }}</span></span
-                                    >
+                                    <span class="text-700 line-height-3"><span class="text-700"> Check Out : {{ my_checkout
+                                    }}</span></span>
                                 </li>
                             </ul>
                         </div>
@@ -660,27 +674,28 @@ const searchPersonnel = (event) => {
                         </template>
                     </Dialog>
 
-                    <Dialog v-model:visible="deletefirearmDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                    <Dialog v-model:visible="deletefirearmDialog" :style="{ width: '450px' }" header="Confirm"
+                        :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                            <span v-if="firearm"
-                                >Are you sure you want to deletes <b>{{ firearm.firearms }}</b
-                                >?</span
-                            >
+                            <span v-if="firearm">Are you sure you want to deletes <b>{{ firearm.firearms }}</b>?</span>
                         </div>
                         <template #footer>
-                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deletefirearmDialog = false" />
+                            <Button label="No" icon="pi pi-times" class="p-button-text"
+                                @click="deletefirearmDialog = false" />
                             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteFireArms" />
                         </template>
                     </Dialog>
 
-                    <Dialog v-model:visible="deletefirearmsDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                    <Dialog v-model:visible="deletefirearmsDialog" :style="{ width: '450px' }" header="Confirm"
+                        :modal="true">
                         <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
                             <span v-if="firearm">Are you sure you want to delete the selected firearms?</span>
                         </div>
                         <template #footer>
-                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deletefirearmsDialog = false" />
+                            <Button label="No" icon="pi pi-times" class="p-button-text"
+                                @click="deletefirearmsDialog = false" />
                             <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelectedFireArms" />
                         </template>
                     </Dialog>
@@ -689,9 +704,8 @@ const searchPersonnel = (event) => {
         </div>
     </div>
 </template>
-<style scoped lang="scss">
-@import '@/assets/demo/styles/badges.scss';
+<style scoped lang="scss">@import '@/assets/demo/styles/badges.scss';
+
 .p-dialog .p-dialog-header-icon {
     display: none !important;
-}
-</style>
+}</style>

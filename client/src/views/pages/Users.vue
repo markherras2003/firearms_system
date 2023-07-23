@@ -316,7 +316,7 @@ const initFilters = () => {
                         </Column>
                     </DataTable>
 
-                    <Dialog v-model:visible="crudDialog" :style="{ width: '600px' }" header="Roles and Permissions" :modal="true" class="p-fluid">
+                    <Dialog v-model:visible="crudDialog" :style="{ width: '600px' }" header="User Account" :modal="true" class="p-fluid">
                         <div class="formgrid grid">
                             <div class="field col">
                                 <label for="firstName">Firstname</label>

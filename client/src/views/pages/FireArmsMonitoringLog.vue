@@ -64,7 +64,6 @@ const hasPermission = (permission, currentUserRole, roles) => {
 const canRead = computed(() => hasPermission('personnels:read', store.state.currentUserRole, store.state.roles));
 const canWrite = computed(() => hasPermission('personnels:write', store.state.currentUserRole, store.state.roles));
 const canDelete = computed(() => hasPermission('personnels:delete', store.state.currentUserRole, store.state.roles));
-//const canEdit = computed(() => hasPermission('personnels:edit', store.state.currentUserRole, store.state.roles));
 
 onMounted(async () => {
     try {
