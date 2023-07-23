@@ -82,7 +82,7 @@ const print = (printData) => {
 };
 
 const savePersonnel = async () => {
-    console.log(personnels.value);
+    console.log(personnel.value);
     submitted.value = true;
     let {
         _id,
@@ -94,6 +94,12 @@ const savePersonnel = async () => {
         personnel_brsvc: { personnel_brsvc: personnel_brsvc } = {},
         personnel_office: { personnel_office: personnel_office } = {},
         personnel_email } = personnel.value || {};
+
+        console.log(personnel_email);
+
+        if(personnel_email===undefined) {
+            personnel_email = '';
+        }
 
     if (!fullname || !serial_no) {
         return null;
